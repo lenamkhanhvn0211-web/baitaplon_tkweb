@@ -10,26 +10,69 @@
 <link rel="stylesheet" href="css/payment.css">
 </head>
 <body>
-<header id="site-header" class="site-header"></header>
+<header class="site-header">
+  <a class="brand" href="payment.html">Quán Cà Phê Góc Phố</a>
+  <nav><a href="payment.html" class="active">Thanh toán</a></nav>
+</header>
 <main>
-<h1>Thanh toán</h1>
-<div class="two-col">
-<section class="panel"><h2>Hóa đơn</h2><table><tbody id="lines"></tbody></table>
-<div class="total"><span>Tạm tính</span><span id="sub"></span></div>
-<div class="total"><span>Giảm giá</span><span id="cut"></span></div>
-<div class="total"><span>Thành tiền</span><span id="sum"></span></div>
-<div class="field" style="margin-top:16px"><label for="code">Mã giảm giá (thử CAFE10)</label><div class="toolbar"><input id="code"><button type="button" class="btn ghost" id="apply">Áp dụng</button></div><span id="code-msg"></span></div></section>
-<form class="panel" id="pay-form" novalidate><h2>Thông tin thanh toán</h2>
-<div class="field"><label for="name">Họ tên</label><input id="name"><span class="error" id="e-name"></span></div>
-<div class="field"><label for="phone">Số điện thoại</label><input id="phone" inputmode="numeric"><span class="error" id="e-phone"></span></div>
-<fieldset class="field" style="border:0;padding:0"><legend>Phương thức</legend>
-<label><input type="radio" name="method" value="Tiền mặt"> Tiền mặt</label>
-<label><input type="radio" name="method" value="Chuyển khoản"> Chuyển khoản</label>
-<label><input type="radio" name="method" value="Thẻ"> Thẻ</label><span class="error" id="e-method"></span></fieldset>
-<span class="error" id="e-cart"></span>
-<button class="btn" type="submit">Xác nhận thanh toán</button><p id="done" class="msg-ok"></p></form></div>
+  <h1>Thanh toán</h1>
+  <div class="two-col" id="pay-area">
+    <section class="panel">
+      <h2>Hóa đơn</h2>
+      <div class="toolbar">
+        <select id="add-item" aria-label="Chọn món để thêm"></select>
+        <button type="button" class="btn ghost" id="add-btn">Thêm món</button>
+      </div>
+      <table>
+        <thead><tr><th>Món</th><th>Size</th><th>Số lượng</th><th>Thành tiền</th><th></th></tr></thead>
+        <tbody id="lines"></tbody>
+      </table>
+      <p class="note">Giá gốc là size Vừa. Nhỏ giảm 5.000đ, Lớn thêm 8.000đ. Bánh không có size.</p>
+
+      <div class="total"><span>Tạm tính</span><span id="sub">0đ</span></div>
+      <div class="total"><span>Giảm giá</span><span id="cut">-0đ</span></div>
+      <div class="total big"><span>Thành tiền</span><span id="sum">0đ</span></div>
+
+      <div class="field" style="margin-top:16px">
+        <label for="code">Mã giảm giá (thử CAFE10 hoặc HELLO20)</label>
+        <div class="toolbar">
+          <input id="code" autocomplete="off">
+          <button type="button" class="btn ghost" id="apply">Áp dụng</button>
+        </div>
+        <span id="code-msg"></span>
+      </div>
+    </section>
+    <form class="panel" id="pay-form" novalidate>
+      <h2>Thông tin thanh toán</h2>
+      <div class="field">
+        <label for="name">Họ tên</label>
+        <input id="name" autocomplete="name">
+        <span class="error" id="e-name"></span>
+      </div>
+      <div class="field">
+        <label for="phone">Số điện thoại</label>
+        <input id="phone" inputmode="numeric" autocomplete="tel">
+        <span class="error" id="e-phone"></span>
+      </div>
+      <fieldset class="field methods">
+        <legend>Phương thức thanh toán</legend>
+        <label><input type="radio" name="method" value="Tiền mặt"> Tiền mặt</label>
+        <label><input type="radio" name="method" value="Chuyển khoản"> Chuyển khoản</label>
+        <label><input type="radio" name="method" value="Thẻ"> Thẻ</label>
+        <span class="error" id="e-method"></span>
+      </fieldset>
+      <div class="field" id="cash-box" hidden>
+        <label for="cash">Tiền khách đưa (đồng)</label>
+        <input id="cash" inputmode="numeric">
+        <span id="change"></span>
+        <span class="error" id="e-cash"></span>
+      </div>
+      <span class="error" id="e-cart"></span>
+      <button class="btn" type="submit">Xác nhận thanh toán</button>
+    </form>
+  </div>
+  <section class="panel" id="invoice" hidden></section>
 </main>
-<script src="js/common.js"></script>
 <script src="js/payment.js"></script>
 </body>
 </html>
