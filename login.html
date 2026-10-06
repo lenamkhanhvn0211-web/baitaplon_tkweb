@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Đăng nhập - Quán Cà Phê Góc Phố</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+<header id="site-header" class="site-header"></header>
+<main>
+<h1>Đăng nhập</h1>
+<form class="panel login-box" id="login-form" novalidate>
+<div class="field"><label for="user">Tên đăng nhập</label><input id="user" autocomplete="username"><span class="error" id="e-user"></span></div>
+<div class="field"><label for="pass">Mật khẩu</label><input id="pass" type="password" autocomplete="current-password"><span class="error" id="e-pass"></span></div>
+<span class="error" id="e-login"></span>
+<button class="btn" type="submit">Đăng nhập</button>
+<p style="margin-top:12px;font-size:.88rem">Tài khoản thử: admin / 123456</p></form>
+</main>
+<script src="js/common.js"></script>
+<script src="js/login.js"></script>
+</body>
+</html>

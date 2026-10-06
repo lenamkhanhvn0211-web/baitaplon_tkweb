@@ -1,0 +1,78 @@
+/* CSS riêng trang Thực đơn */
+
+/* ---------- Nút lọc danh mục ---------- */
+.chip {
+  font: inherit;
+  cursor: pointer;
+  border: 1px solid var(--line);
+  background: var(--white);
+  padding: 6px 14px;
+  border-radius: 6px;
+}
+
+.chip.on {
+  background: var(--caramel);
+  border-color: var(--caramel);
+  color: #fff;
+}
+
+/* ---------- Lưới món ăn ---------- */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 16px;
+}
+
+.card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.thumb {
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  font-size: 2.4rem;
+  font-weight: 600;
+  color: #fff;
+  background: var(--pine);
+}
+
+.card-body {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.price {
+  color: var(--caramel);
+  font-weight: 600;
+}
+
+/* Ảnh minh họa món */
+.thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 40%;
+  display: block;
+}
+
+.toolbar {
+  align-items: center;
+}
+
+#chips {
+  margin-bottom: 0;
+}
+
+#search {
+  padding: 6px 14px;
+}

@@ -1,0 +1,17 @@
+/* CSS riêng trang Gọi món */
+
+/* ---------- Nút tăng / giảm số lượng ---------- */
+.qty {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.qty button {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  background: var(--white);
+  cursor: pointer;
+}

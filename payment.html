@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Thanh toán - Quán Cà Phê Góc Phố</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/payment.css">
+</head>
+<body>
+<header id="site-header" class="site-header"></header>
+<main>
+<h1>Thanh toán</h1>
+<div class="two-col">
+<section class="panel"><h2>Hóa đơn</h2><table><tbody id="lines"></tbody></table>
+<div class="total"><span>Tạm tính</span><span id="sub"></span></div>
+<div class="total"><span>Giảm giá</span><span id="cut"></span></div>
+<div class="total"><span>Thành tiền</span><span id="sum"></span></div>
+<div class="field" style="margin-top:16px"><label for="code">Mã giảm giá (thử CAFE10)</label><div class="toolbar"><input id="code"><button type="button" class="btn ghost" id="apply">Áp dụng</button></div><span id="code-msg"></span></div></section>
+<form class="panel" id="pay-form" novalidate><h2>Thông tin thanh toán</h2>
+<div class="field"><label for="name">Họ tên</label><input id="name"><span class="error" id="e-name"></span></div>
+<div class="field"><label for="phone">Số điện thoại</label><input id="phone" inputmode="numeric"><span class="error" id="e-phone"></span></div>
+<fieldset class="field" style="border:0;padding:0"><legend>Phương thức</legend>
+<label><input type="radio" name="method" value="Tiền mặt"> Tiền mặt</label>
+<label><input type="radio" name="method" value="Chuyển khoản"> Chuyển khoản</label>
+<label><input type="radio" name="method" value="Thẻ"> Thẻ</label><span class="error" id="e-method"></span></fieldset>
+<span class="error" id="e-cart"></span>
+<button class="btn" type="submit">Xác nhận thanh toán</button><p id="done" class="msg-ok"></p></form></div>
+</main>
+<script src="js/common.js"></script>
+<script src="js/payment.js"></script>
+</body>
+</html>

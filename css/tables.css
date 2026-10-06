@@ -1,0 +1,29 @@
+/* CSS riêng trang Quản lý bàn */
+
+/* ---------- Lưới các bàn ---------- */
+.tables {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 12px;
+}
+
+/* ---------- Nút bàn: mặc định là bàn trống (viền xanh) ---------- */
+.table-btn {
+  font: inherit;
+  cursor: pointer;
+  border-radius: 8px;
+  padding: 18px 8px;
+  border: 2px solid var(--ok);
+  background: #e3f1e8;
+  color: var(--ink);
+}
+
+/* Bàn có khách (viền đỏ) */
+.table-btn.busy {
+  border-color: var(--danger);
+  background: #f6e0de;
+}
+
+.table-btn small {
+  display: block;
+}
