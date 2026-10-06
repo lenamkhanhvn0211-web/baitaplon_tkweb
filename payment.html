@@ -10,23 +10,18 @@
 <link rel="stylesheet" href="css/payment.css">
 </head>
 <body>
-<header class="site-header">
-  <a class="brand" href="payment.html">Quán Cà Phê Góc Phố</a>
-  <nav><a href="payment.html" class="active">Thanh toán</a></nav>
-</header>
+<header id="site-header" class="site-header"></header>
 <main>
   <h1>Thanh toán</h1>
   <div class="two-col" id="pay-area">
     <section class="panel">
       <h2>Hóa đơn</h2>
-      <div class="toolbar">
-        <select id="add-item" aria-label="Chọn món để thêm"></select>
-        <button type="button" class="btn ghost" id="add-btn">Thêm món</button>
-      </div>
+            <div class="table-wrap">
       <table>
         <thead><tr><th>Món</th><th>Size</th><th>Số lượng</th><th>Thành tiền</th><th></th></tr></thead>
         <tbody id="lines"></tbody>
       </table>
+      </div>
       <p class="note">Giá gốc là size Vừa. Nhỏ giảm 5.000đ, Lớn thêm 8.000đ. Bánh không có size.</p>
 
       <div class="total"><span>Tạm tính</span><span id="sub">0đ</span></div>
@@ -73,6 +68,7 @@
   </div>
   <section class="panel" id="invoice" hidden></section>
 </main>
+<script src="js/common.js"></script>
 <script src="js/payment.js"></script>
 </body>
 </html>

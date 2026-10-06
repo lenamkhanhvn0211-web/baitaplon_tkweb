@@ -5,6 +5,122 @@
 h1 {
   font-size: 1.7rem;
   margin-bottom: 16px;
+}/* Thuộc tính hidden phải thắng display:flex của .field */
+[hidden] {
+  display: none !important;
+}
+h2 {
+  font-size: 1.2rem;
+  margin-bottom: 12px;
+}
+/* -------- Bố cục 2 cột: hóa đơn | thông tin thanh toán -------- */
+.two-col {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 16px;
+  align-items: start;
+}
+/* Bảng quá rộng thì cuộn ngang trong khung, không làm vỡ trang */
+.two-col > * {
+  min-width: 0;
+}
+.table-wrap {
+  overflow-x: auto;
+}
+.table-wrap td:first-child {
+  white-space: nowrap;
+}
+
+/* -------- Hóa đơn -------- */
+.qty {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.qty button {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  background: var(--white);
+  cursor: pointer;
+}
+.qty button:hover {
+  background: #e3ebe7;
+}
+.size-sel {
+  padding: 4px 8px;
+}
+.note {
+  font-size: 0.88rem;
+  color: #5b6b66;
+  margin-top: 8px;
+}
+.total.big {
+  font-size: 1.3rem;
+  color: var(--caramel);
+  border-top: 2px solid var(--line);
+  margin-top: 12px;
+}
+/* -------- Form thanh toán -------- */
+.methods {
+  border: 0;
+  padding: 0;
+}
+.methods label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+}
+.msg-ok {
+  color: var(--ok);
+  font-weight: 600;
+}
+#change {
+  font-weight: 600;
+  color: var(--ok);
+}
+/* -------- Hóa đơn sau khi thanh toán -------- */
+#invoice {
+  margin-top: 16px;
+}
+#invoice .done {
+  color: var(--ok);
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+#invoice .meta {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2px 16px;
+  margin-bottom: 12px;
+}
+#invoice .actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+/* -------- Responsive & Print -------- */
+@media (max-width: 700px) {
+  .two-col {
+    grid-template-columns: 1fr;
+  }
+}
+@media print {
+  body {
+    background: #fff;
+  }
+  .site-header, 
+  h1, 
+  #pay-area, 
+  #invoice .actions {
+    display: none;
+  }
+  #invoice {
+    border: 0;
+    margin: 0;
+  }
 }
 h2 {
   font-size: 1.2rem;
