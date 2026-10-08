@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <title>Cà phé - Đăng ký</title>
+</head>
+<body>
+    <div id="wrapper">
+        <form action="" id="form-login" autocomplete="off">
+            <h1 class="form-heading">ĐĂNG KÝ</h1>
+            <div class="form-group">
+                <i class="fas fa-user" aria-hidden="true"></i>
+                <input type="text" class="form-input" placeholder="Tên đăng nhập" id="username" autocomplete="off">
+            </div>
+            <div class="form-group">
+                <i class="fas fa-envelope" aria-hidden="true"></i>
+                <input type="email" class="form-input" placeholder="Email" id="email" autocomplete="off">
+            </div>
+            <div class="form-group">
+                <i class="fas fa-lock" aria-hidden="true"></i>
+                <input type="password" class="form-input" placeholder="Mật khẩu" id="password" autocomplete="off">
+                <div class="eye">
+                    <i class="fas fa-eye" aria-hidden="true"></i>
+                </div>
+            </div>
+            <div class="form-group">
+                <i class="fas fa-check-circle" aria-hidden="true"></i>
+                <input type="password" class="form-input" placeholder="Xác nhận mật khẩu" id="confirm-password" autocomplete="off">
+                <div class="eye">
+                    <i class="fas fa-eye" aria-hidden="true"></i>
+                </div>
+            </div>
+            <input type="submit" value="Đăng ký" class="form-submit">
+            <div class="form-redirect">
+                Đã có tài khoản? <a href="login.html">Đăng nhập ngay</a>
+            </div>
+        </form>
+    </div>
+</body>
+<script src="https://code.jquery.com/jquery-4.0.0.js"></script>
+<script src="js/login.js"></script>
+</html>
