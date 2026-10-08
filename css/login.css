@@ -1,6 +1,97 @@
-/* CSS riêng trang Đăng nhập */
-
-.login-box {
-  max-width: 380px;
-  margin: 40px auto;
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+    -webkit-text-fill-color: #fff !important;
+    -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
+    transition: background-color 5000s ease-in-out 0s !important;
+}
+body {
+    background-image: url('../images/ảnh.jpg'); 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    font-size: 16px;
+    font-family: 'Montserrat', sans-serif;
+}
+#wrapper{
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#form-login{
+    max-width: 400px;
+    padding: 30px 30px 40px;
+    background: rgba(0, 0, 0, 0.8);
+    flex-grow: 1;
+    border-radius: 10px;
+    box-shadow:0px 0px 17px 2px rgba(254, 254, 254, 0.1);
+}
+.form-heading{
+    text-align: center;
+    color: #fff;
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 30px;
+}
+.form-group {
+    border-bottom: 1px solid #fff;
+    margin-top: 15px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    padding-bottom: 5px;
+}
+.form-group i{
+    color:#fff;
+    font-size: 14px;
+    margin-right: 10px;
+}
+.form-input{
+    background: transparent;
+    border: 0;
+    outline: 0;
+    color:#fff;
+    flex-grow: 1;
+    font-size: 16px;
+}
+.form-input::placeholder{
+    color: #f5f5f5;
+}
+#eye i, .eye-toggle i {
+    cursor: pointer;
+    padding-right: 2%;
+}
+#eye i, .eye-toggle i {
+    margin-right: 0;
+}
+.form-submit{
+    background: transparent;
+    color: #fff;
+    border: 1px solid #f5f5f5;
+    padding: 6px 10px;
+    text-transform: uppercase;
+    width: 100%;
+    transition: 0.25s ease-in-out;
+    margin-top: 20px;
+    cursor: pointer;
+}
+.form-submit:hover{
+    border: 1px solid #54a0ff;
+}
+.form-redirect {
+    text-align: center;
+    color: #ccc;
+    font-size: 14px;
+    margin-top: 20px;
+}
+.form-redirect a {
+    color: #54a0ff;
+    text-decoration: underline;
+    font-weight: 600;
+}
+.form-redirect a:hover {
+    color: #fff;
 }
