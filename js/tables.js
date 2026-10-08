@@ -1,10 +1,5 @@
-/* ==========================================================
-   TRANG QUẢN LÝ BÀN: bấm vào bàn để đổi Trống <-> Có khách
-   ========================================================== */
-
 const TABLE_COUNT = 12;
 
-// Tạo danh sách bàn mặc định: bàn 1, 4, 7, 10 có 2 chỗ, còn lại 4 chỗ
 function createDefaultTables() {
   return Array.from({ length: TABLE_COUNT }, (_, i) => ({
     id: i + 1,
@@ -13,49 +8,64 @@ function createDefaultTables() {
   }));
 }
 
-// Lấy từ localStorage, nếu chưa có thì dùng danh sách mặc định
 let tables = load("tables", createDefaultTables());
 
 const wrap = document.getElementById("tables");
 
-// ---------- Hiển thị ----------
 function renderTables() {
   wrap.innerHTML = tables
-    .map(
-      (t) => `
-    <button class="table-btn ${t.busy ? "busy" : ""}" data-id="${t.id}" aria-pressed="${t.busy}">
-      <strong>Bàn ${t.id}</strong>
-      <small>${t.seats} chỗ</small>
-      <small>${t.busy ? "Có khách" : "Trống"}</small>
-    </button>`
-    )
+    .map((t) => {
+      let statusClass = "";
+      let statusText = "Trống";
+
+      if (t.busy === "booked") {
+        statusClass = "booked";
+        statusText = "Đã đặt trước";
+      } else if (t.busy === true) {
+        statusClass = "busy";
+        statusText = "Đang phục vụ";
+      }
+
+      return `
+        <button class="table-btn ${statusClass}" data-id="${t.id}" aria-pressed="${t.busy}">
+          <strong>Bàn ${t.id}</strong>
+          <small>${t.seats} chỗ</small>
+          <small>${statusText}</small>
+        </button>
+      `;
+    })
     .join("");
 
-  const busyCount = tables.filter((t) => t.busy).length;
+  const busyCount = tables.filter((t) => t.busy === true).length;
+  const bookedCount = tables.filter((t) => t.busy === "booked").length;
+  const freeCount = tables.length - busyCount - bookedCount;
+
   document.getElementById("stat").textContent =
-    `Có khách: ${busyCount} | Trống: ${tables.length - busyCount}`;
+    `Đang phục vụ: ${busyCount} | Đã đặt trước: ${bookedCount} | Trống: ${freeCount}`;
 }
 
-// ---------- Sự kiện ----------
-
-// Bấm vào bàn: đổi trạng thái
 wrap.addEventListener("click", (e) => {
   const button = e.target.closest("[data-id]");
   if (!button) return;
 
   const table = tables.find((t) => t.id == button.dataset.id);
-  table.busy = !table.busy;
+
+  if (table.busy === false) {
+    table.busy = true;
+  } else if (table.busy === true) {
+    table.busy = "booked";
+  } else {
+    table.busy = false;
+  }
 
   save("tables", tables);
   renderTables();
 });
 
-// Bấm "Đặt lại tất cả bàn": đưa mọi bàn về trạng thái trống
 document.getElementById("reset").addEventListener("click", () => {
   tables.forEach((t) => (t.busy = false));
   save("tables", tables);
   renderTables();
 });
 
-// ---------- Khởi chạy ----------
 renderTables();
