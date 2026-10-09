@@ -76,3 +76,115 @@
 #search {
   padding: 6px 14px;
 }
+
+/* ---------- Nút "Thêm vào giỏ" ---------- */
+.add-btn {
+  margin-top: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: #fff;
+  cursor: pointer;
+  border: 0;
+  border-radius: 100px;
+  padding: 9px 16px;
+  background: linear-gradient(135deg, var(--caramel), #e0a458);
+  box-shadow: 0 4px 10px rgba(196, 135, 59, 0.35);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+
+.add-btn::before {
+  content: "+";
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* Rê chuột vào: nút thu nhỏ lại một chút */
+.add-btn:hover {
+  transform: scale(0.93);
+  box-shadow: 0 2px 5px rgba(196, 135, 59, 0.3);
+  filter: brightness(1.05);
+}
+
+/* Bấm xuống: thu nhỏ thêm */
+.add-btn:active {
+  transform: scale(0.88);
+}
+
+/* ---------- Ảnh món bay vào giỏ ---------- */
+.fly-img {
+  position: fixed;
+  z-index: 1000;
+  border-radius: 50%;
+  pointer-events: none;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* Số trên giỏ hàng nảy lên khi ảnh bay tới */
+.badge.bump {
+  animation: bump 0.35s ease;
+}
+
+@keyframes bump {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.5); }
+  100% { transform: scale(1); }
+}
+
+/* ---------- Kiểu mới cho thẻ món và ảnh ---------- */
+.card {
+  border-radius: 20px;
+  padding: 10px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(30, 59, 52, 0.12);
+}
+
+/* Ảnh: bo tròn, thụt vào trong thẻ, tỉ lệ ngang thay vì vuông */
+.card .thumb {
+  aspect-ratio: 4 / 3;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #f6ecd9, #efe3cc);
+}
+
+.card .thumb img {
+  transition: transform 0.4s ease;
+}
+
+.card:hover .thumb img {
+  transform: scale(1.08);
+}
+
+/* Chữ cái đầu khi chưa có ảnh */
+.card .thumb span {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--pine);
+  color: #fff;
+  font-size: 1.8rem;
+}
+
+.card-body {
+  padding: 12px 6px 4px;
+}
+
+/* Tên danh mục thành nhãn nhỏ */
+.card-body > span:not(.price) {
+  align-self: flex-start;
+  font-size: 0.78rem;
+  color: var(--pine);
+  background: #e6efe9;
+  padding: 1px 10px;
+  border-radius: 999px;
+}

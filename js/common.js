@@ -4,18 +4,58 @@
 
 // ---------- Dữ liệu thực đơn ----------
 const MENU = [
-  { id: 1,  name: "Cà phê đen",     cat: "Cà phê",  price: 25000, img: "images/ca-phe-den.jpg" },
-  { id: 2,  name: "Cà phê sữa",     cat: "Cà phê",  price: 29000, img: "images/ca-phe-sua.jpg" },
-  { id: 3,  name: "Bạc xỉu",        cat: "Cà phê",  price: 32000, img: "images/bac-xiu.jpg" },
-  { id: 4,  name: "Cappuccino",     cat: "Cà phê",  price: 45000, img: "images/cappuccino.jpg" },
-  { id: 5,  name: "Trà đào",        cat: "Trà",     price: 39000, img: "images/tra-dao.jpg" },
-  { id: 6,  name: "Trà vải",        cat: "Trà",     price: 39000, img: "images/tra-vai.jpg" },
-  { id: 7,  name: "Trà sen vàng",   cat: "Trà",     price: 42000, img: "images/tra-sen-vang.jpg" },
-  { id: 8,  name: "Sinh tố bơ",     cat: "Sinh tố", price: 45000, img: "images/sinh-to-bo.jpg" },
-  { id: 9,  name: "Sinh tố xoài",   cat: "Sinh tố", price: 42000, img: "images/sinh-to-xoai.jpg" },
-  { id: 10, name: "Bánh tiramisu",  cat: "Bánh",    price: 35000, img: "images/banh-tiramisu.jpg" },
-  { id: 11, name: "Bánh croissant", cat: "Bánh",    price: 30000, img: "images/banh-croissant.jpg" },
-  { id: 12, name: "Bánh cookie",    cat: "Bánh",    price: 20000, img: "images/banh-cookie.jpg" },
+  // ===== Cà phê =====
+  { id: 1,  name: "Cà phê đen",         cat: "Cà phê",  price: 25000, img: "images/ca-phe-den.jpg" },
+  { id: 2,  name: "Cà phê sữa",         cat: "Cà phê",  price: 29000, img: "images/ca-phe-sua.jpg" },
+  { id: 3,  name: "Bạc xỉu",            cat: "Cà phê",  price: 32000, img: "images/bac-xiu.jpg" },
+  { id: 4,  name: "Cappuccino",         cat: "Cà phê",  price: 45000, img: "images/cappuccino.jpg" },
+  { id: 5,  name: "Cà phê trứng",       cat: "Cà phê",  price: 40000, img: "images/ca-phe-trung.jpg"},
+  { id: 6,  name: "Cà phê cốt dừa",     cat: "Cà phê",  price: 40000, img: "images/ca-phe-cot-dua.jpg" },
+  { id: 7,  name: "Cà phê muối",        cat: "Cà phê",  price: 35000, img: "images/ca-phe-muoi.jpg" },
+  { id: 8,  name: "Cold Brew",          cat: "Cà phê",  price: 40000, img: "images/cold-brew.jpg" },
+  { id: 9,  name: "Espresso",           cat: "Cà phê",  price: 30000, img: "images/espresso.jpg" },
+  { id: 10, name: "Americano",          cat: "Cà phê",  price: 35000, img: "images/americano.jpg" },
+  { id: 11, name: "Latte",              cat: "Cà phê",  price: 45000, img: "images/latte.jpg" },
+  { id: 12, name: "Caramel Macchiato",  cat: "Cà phê",  price: 45000, img: "images/caramel-machi.jpg" },
+  { id: 13, name: "Mocha",              cat: "Cà phê",  price: 45000, img: "images/mocha.jpg"},
+
+  // ===== Trà =====
+  { id: 14, name: "Trà đào",            cat: "Trà",     price: 40000, img: "images/tra-dao.jpg" },
+  { id: 15, name: "Trà vải",            cat: "Trà",     price: 40000, img: "images/tra-vai.jpg" },
+  { id: 16, name: "Trà sen vàng",       cat: "Trà",     price: 42000, img: "images/tra-sen-vang.jpg" },
+  { id: 17, name: "Matcha đá xay",      cat: "Trà",     price: 40000, img: "images/matcha.webp" },
+  { id: 18, name: "Trà đào cam xả",     cat: "Trà",     price: 35000, img: "images/tra-dao-cam-xa.jpg" },
+  { id: 19, name: "Trà xoài",           cat: "Trà",     price: 30000, img: "images/tra-xoai.jpg" },
+  { id: 20, name: "Trà chanh",          cat: "Trà",     price: 25000, img: "images/tra-chanh.jpg" },
+  { id: 21, name: "Trà ổi hồng",        cat: "Trà",     price: 39000, img: "images/tra-oi-hong.jpg" },
+  { id: 22, name: "Trà dâu tằm",        cat: "Trà",     price: 39000, img: "images/tra-dau-tam.jpg" },
+  { id: 23, name: "Trà hoa cúc mật ong",cat: "Trà",     price: 32000, img: "images/tra-hoa-cuc-mat-ong.jpeg"},
+  { id: 24, name: "Trà gừng mật ong",   cat: "Trà",     price: 30000, img: "images/tra-gung.jpg" },
+  { id: 25, name: "Trà nhiệt đới",      cat: "Trà",     price: 42000, img: "images/tra-nhiet-doi.jpg" },
+
+  // ===== Sinh tố =====
+  { id: 26, name: "Sinh tố bơ",         cat: "Sinh tố", price: 45000, img: "images/sinh-to-bo.jpg" },
+  { id: 27, name: "Sinh tố xoài",       cat: "Sinh tố", price: 42000, img: "images/sinh-to-xoai.jpg" },
+  { id: 28, name: "Sinh tố mãng cầu",   cat: "Sinh tố", price: 45000, img: "images/sinh-to-mang-cau.webp" },
+  { id: 29, name: "Sinh tố chuối",      cat: "Sinh tố", price: 35000, img: "images/sinh-to-chuoi.webp" },
+  { id: 30, name: "Sinh tố bơ xoài",    cat: "Sinh tố", price: 50000, img: "images/sinh-to-bo-xoai.webp" },
+  { id: 31, name: "Sinh tố dâu chuối",  cat: "Sinh tố", price: 45000, img: "images/sinh-to-dau-chuoi.webp" },
+  { id: 32, name: "Sinh tố đu đủ",      cat: "Sinh tố", price: 45000, img: "images/sinh-to-du-di.jpeg" },
+  { id: 33, name: "Sinh tố dâu",        cat: "Sinh tố", price: 42000, img: "images/sinh-to-dau.jpeg" },
+  { id: 34, name: "Sinh tố sapoche",    cat: "Sinh tố", price: 42000, img: "images/sinh-to-sapoche.jpg"  },
+  { id: 35, name: "Sinh tố dưa hấu",    cat: "Sinh tố", price: 35000, img: "images/sinh-to-dua-hau.jpg" },
+  { id: 36, name: "Sinh tố cam",        cat: "Sinh tố", price: 40000, img: "images/sinh-to-cam.jpeg" },
+  { id: 37, name: "Sinh tố dứa",        cat: "Sinh tố", price: 40000, img: "images/sinh-to-dua.webp" },
+
+  // ===== Bánh =====
+  { id: 39, name: "Bánh cuộn quế",      cat: "Bánh",    price: 35000, img: "images/banh-que.webp" },
+  { id: 39, name: "Bánh tiramisu",      cat: "Bánh",    price: 35000, img: "images/banh-tiramisu.jpg" },
+  { id: 40, name: "Bánh croissant",     cat: "Bánh",    price: 30000, img: "images/banh-croissant.jpg" },
+  { id: 41, name: "Bánh cookie",        cat: "Bánh",    price: 20000, img: "images/banh-cookie.jpg" },
+  { id: 42, name: "Bông lan trứng muối",cat: "Bánh",    price: 35000, img: "images/bong-lan-trung-muoi.jpeg" },
+  { id: 43, name: "Bánh flan",          cat: "Bánh",    price: 20000, img: "images/flan.jpeg" },
+  { id: 44, name: "Bánh su kem",        cat: "Bánh",    price: 25000, img: "images/banh-su-kem.jpeg" },
+  { id: 45, name: "Cheesecake",         cat: "Bánh",    price: 42000, img: "images/cheesecake.webp" },
 ];
 
 // ---------- Hàm tiện ích ----------
