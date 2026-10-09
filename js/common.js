@@ -1,8 +1,3 @@
-/* ==========================================================
-   JS DÙNG CHUNG: dữ liệu thực đơn, giỏ hàng, header
-   ========================================================== */
-
-// ---------- Dữ liệu thực đơn ----------
 const MENU = [
   { id: 1,  name: "Cà phê đen",     cat: "Cà phê",  price: 25000, img: "images/ca-phe-den.jpg" },
   { id: 2,  name: "Cà phê sữa",     cat: "Cà phê",  price: 29000, img: "images/ca-phe-sua.jpg" },
@@ -18,12 +13,8 @@ const MENU = [
   { id: 12, name: "Bánh cookie",    cat: "Bánh",    price: 20000, img: "images/banh-cookie.jpg" },
 ];
 
-// ---------- Hàm tiện ích ----------
-
-// Định dạng tiền: 25000 -> "25.000đ"
 const fmt = (n) => n.toLocaleString("vi-VN") + "đ";
 
-// Đọc dữ liệu từ localStorage (nếu lỗi hoặc chưa có thì trả về giá trị mặc định)
 const load = (key, defaultValue) => {
   try {
     return JSON.parse(localStorage.getItem(key)) ?? defaultValue;
@@ -32,30 +23,23 @@ const load = (key, defaultValue) => {
   }
 };
 
-// Lưu dữ liệu vào localStorage
 const save = (key, value) => {
   localStorage.setItem(key, JSON.stringify(value));
 };
 
-// ---------- Giỏ hàng ----------
-// Giỏ hàng có dạng { idMón: soLượng }, ví dụ { "1": 2, "5": 1 }
-
 const getCart = () => load("cart", {});
 
-// Tổng số lượng món trong giỏ
 const cartCount = () => {
   return Object.values(getCart()).reduce((sum, qty) => sum + qty, 0);
 };
 
-// Tổng tiền của giỏ hàng
 const cartTotal = () => {
   return Object.entries(getCart()).reduce((sum, [id, qty]) => {
     const item = MENU.find((m) => m.id == id);
-    return sum + item.price * qty;
+    return sum + (item ? item.price * qty : 0);
   }, 0);
 };
 
-// Thêm 1 món vào giỏ
 function addToCart(id) {
   const cart = getCart();
   cart[id] = (cart[id] || 0) + 1;
@@ -63,26 +47,22 @@ function addToCart(id) {
   updateBadge();
 }
 
-// Cập nhật số hiển thị trên biểu tượng giỏ hàng ở header
 function updateBadge() {
   const badge = document.getElementById("cart-badge");
   if (badge) badge.textContent = cartCount();
 }
 
-// ---------- Header ----------
 function renderHeader() {
   const pages = [
     ["index.html",   "Thực đơn"],
     ["order.html",   "Gọi món"],
     ["payment.html", "Thanh toán"],
     ["tables.html",  "Quản lý bàn"],
-    ["login.html",   "Đăng nhập"],
   ];
 
-  // Tên file của trang hiện tại, dùng để đánh dấu mục đang chọn
   const currentPage = location.pathname.split("/").pop() || "index.html";
 
-  const navLinks = pages
+  let navLinks = pages
     .map(([href, title]) => {
       const activeClass = href === currentPage ? "active" : "";
       const badge =
@@ -93,11 +73,42 @@ function renderHeader() {
     })
     .join("");
 
-  document.getElementById("site-header").innerHTML =
-    '<a class="brand" href="index.html">Quán Cà Phê Góc Phố</a>' +
-    `<nav>${navLinks}</nav>`;
+  const currentUser = load("currentUser", null);
+
+  if (currentUser && currentUser.isLoggedIn) {
+    const isAdmin = currentUser.role === "admin";
+    
+    navLinks += `
+      <div class="user-box ${isAdmin ? 'admin-box' : ''}">
+        <i class="fas ${isAdmin ? 'fa-user-shield' : 'fa-user-circle'} user-icon"></i>
+        <span class="user-greeting">
+          ${isAdmin ? '<span class="admin-badge">ADMIN</span>' : ''}
+          Xin chào, <strong>${currentUser.username}</strong>
+        </span>
+        <a href="#" id="btn-logout" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+      </div>
+    `;
+  } else {
+    const activeClass = currentPage === "login.html" ? "active" : "";
+    navLinks += `<a href="login.html" class="btn-login-nav ${activeClass}">Đăng nhập</a>`;
+  }
+
+  const headerElem = document.getElementById("site-header");
+  if (headerElem) {
+    headerElem.innerHTML =
+      '<a class="brand" href="index.html">Cà phê web</a>' +
+      `<nav>${navLinks}</nav>`;
+  }
 
   updateBadge();
 }
+
+document.addEventListener("click", function (e) {
+  if (e.target && (e.target.id === "btn-logout" || e.target.closest("#btn-logout"))) {
+    e.preventDefault();
+    localStorage.removeItem("currentUser");
+    window.location.href = "login.html";
+  }
+});
 
 document.addEventListener("DOMContentLoaded", renderHeader);
