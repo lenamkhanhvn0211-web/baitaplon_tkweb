@@ -9,23 +9,15 @@ $(document).ready(function() {
         localStorage.setItem('user_admin', JSON.stringify(adminAccount));
     }
 
-    var savedRememberUser = localStorage.getItem('remembered_user');
-    if (savedRememberUser) {
-        $('#username').val(savedRememberUser);
-        $('#remember').prop('checked', true);
-    } else {
+    $('#username, #password, #email, #confirm-password').val('');
+    setTimeout(function() {
         $('#username, #password, #email, #confirm-password').val('');
-        setTimeout(function() {
-            if (!$('#remember').is(':checked')) {
-                $('#username, #password, #email, #confirm-password').val('');
-            }
-        }, 50);
-    }
+    }, 50);
 
     $(document).on('click', '#eye, .eye', function() {
         $(this).toggleClass('open');
         $(this).children('i').toggleClass('fa-eye-slash fa-eye');
-        var input = $(this).siblings('.input-wrapper').find('input');
+        var input = $(this).siblings('input');
         if ($(this).hasClass('open')) {
             input.attr('type', 'text');
         } else {
@@ -80,12 +72,6 @@ $(document).ready(function() {
 
             var savedUser = JSON.parse(savedData);
             if (savedUser.password === password) {
-                if ($('#remember').is(':checked')) {
-                    localStorage.setItem('remembered_user', rawUsername);
-                } else {
-                    localStorage.removeItem('remembered_user');
-                }
-
                 localStorage.setItem('currentUser', JSON.stringify({
                     username: savedUser.username,
                     role: savedUser.role || 'user',
