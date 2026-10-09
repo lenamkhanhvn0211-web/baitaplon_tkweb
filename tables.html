@@ -1,22 +1,54 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Quản lý bàn - Quán Cà Phê Góc Phố</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/tables.css">
-</head>
-<body>
-<header id="site-header" class="site-header"></header>
-<main>
-<h1>Quản lý bàn</h1>
-<div class="toolbar"><span id="stat" class="panel" style="padding:6px 14px"></span><button class="btn ghost" id="reset">Đặt lại tất cả bàn</button></div>
-<section id="tables" class="tables"></section>
-</main>
-<script src="js/common.js"></script>
-<script src="js/tables.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Quản lý bàn - Quán Cà Phê Góc Phố</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/tables.css" />
+  </head>
+  <body>
+    <header id="site-header" class="site-header"></header>
+    <main>
+      <div class="header-container">
+        <h1 class="page-title">
+          <svg
+            class="coffee-icon"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            width="32"
+            height="32"
+          >
+            <path
+              d="M2 21h18v-2H2v2zM20 8h-2V5h2v3zm2-5H18V2h-2v1H6V2H4v1H2v10c0 3.31 2.69 6 6 6h6c3.31 0 6-2.69 6-6v-3h2c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM4 5h10v8c0 2.21-1.79 4-4 4H8c-2.21 0-4-1.79-4-4V5z"
+            />
+          </svg>
+          Quản lý Bàn
+        </h1>
+        <div class="status-legend">
+          <span class="legend-item"
+            ><span class="color-box bg-green"></span>Trống</span
+          >
+          <span class="legend-item"
+            ><span class="color-box bg-red"></span>Đang phục vụ</span
+          >
+          <span class="legend-item"
+            ><span class="color-box bg-orange"></span>Đã đặt trước</span
+          >
+        </div>
+      </div>
+      <div class="toolbar">
+        <span id="stat" class="panel" style="padding: 6px 14px"></span
+        ><button class="btn ghost" id="reset">Đặt lại tất cả bàn</button>
+      </div>
+      <section id="tables" class="tables"></section>
+    </main>
+    <script src="js/common.js"></script>
+    <script src="js/tables.js"></script>
+  </body>
 </html>

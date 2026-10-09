@@ -1,13 +1,9 @@
-/* CSS riêng trang Quản lý bàn */
-
-/* ---------- Lưới các bàn ---------- */
 .tables {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
   gap: 12px;
 }
 
-/* ---------- Nút bàn: mặc định là bàn trống (viền xanh) ---------- */
 .table-btn {
   font: inherit;
   cursor: pointer;
@@ -18,7 +14,6 @@
   color: var(--ink);
 }
 
-/* Bàn có khách (viền đỏ) */
 .table-btn.busy {
   border-color: var(--danger);
   background: #f6e0de;
@@ -26,4 +21,68 @@
 
 .table-btn small {
   display: block;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 20px;
+}
+
+.page-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: #4a2c1b;
+}
+
+.coffee-icon {
+  color: #4a2c1b;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.status-legend {
+  display: flex;
+  gap: 20px;
+  font-size: 14px;
+  color: #333;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.color-box {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+.bg-green {
+  background-color: #81c784;
+}
+
+.bg-red {
+  background-color: #e57373;
+}
+
+.bg-orange {
+  background-color: #ffb74d;
+}
+
+.table-btn.booked {
+  border-color: #ff9800;
+  background: #fff3e0;
 }
