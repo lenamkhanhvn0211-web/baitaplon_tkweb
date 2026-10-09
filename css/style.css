@@ -1,8 +1,3 @@
-/* ==========================================================
-   CSS CHUNG: màu sắc, font, header, nút, form, bảng
-   ========================================================== */
-
-/* ---------- Biến màu ---------- */
 :root {
   --bg: #eef1ec;
   --ink: #1c2b27;
@@ -14,7 +9,6 @@
   --ok: #2f7a4d;
 }
 
-/* ---------- Thiết lập cơ bản ---------- */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -42,41 +36,111 @@ h1 {
   margin-bottom: 16px;
 }
 
-/* ---------- Header ---------- */
 .site-header {
   background: var(--pine);
   color: #fff;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 8px 24px;
-  padding: 12px 24px;
+  justify-content: space-between;
+  padding: 14px 32px;
+  gap: 20px;
 }
 
 .brand {
-  font-weight: 600;
-  font-size: 1.2rem;
+  font-weight: 700;
+  font-size: 1.35rem;
   text-decoration: none;
-  margin-right: auto;
+  margin-right: 35px;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
 }
 
 .site-header nav {
   display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
+  align-items: center;
+  gap: 16px;
+  flex-grow: 1;
+  justify-content: flex-start;
 }
 
 .site-header nav a {
-  padding: 6px 12px;
-  border-radius: 6px;
+  padding: 8px 16px;
+  border-radius: 8px;
   text-decoration: none;
   color: #cfe0da;
+  font-weight: 500;
+  transition: background 0.2s, color 0.2s;
 }
 
 .site-header nav a.active,
 .site-header nav a:hover {
-  background: #fff2;
+  background: rgba(255, 255, 255, 0.15);
   color: #fff;
+}
+
+.btn-login-nav {
+  margin-left: auto;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.user-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 6px 16px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.admin-box {
+  border-color: rgba(239, 68, 68, 0.5) !important;
+  background: rgba(239, 68, 68, 0.15) !important;
+}
+
+.admin-badge {
+  background: #ef4444;
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-right: 4px;
+  letter-spacing: 0.5px;
+}
+
+.user-icon {
+  font-size: 1.2rem;
+  color: #cfe0da;
+}
+
+.user-greeting {
+  color: #fff;
+  font-size: 0.9rem;
+}
+
+.user-greeting strong {
+  color: #ffdaaa;
+}
+
+.btn-logout {
+  background: rgba(255, 255, 255, 0.15) !important;
+  color: #fff !important;
+  font-size: 0.85rem !important;
+  padding: 4px 12px !important;
+  border-radius: 12px !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-left: 6px;
+}
+
+.btn-logout:hover {
+  background: var(--danger) !important;
+  color: #fff !important;
 }
 
 .badge {
@@ -88,7 +152,6 @@ h1 {
   margin-left: 4px;
 }
 
-/* ---------- Thanh công cụ ---------- */
 .toolbar {
   display: flex;
   flex-wrap: wrap;
@@ -96,7 +159,6 @@ h1 {
   margin-bottom: 20px;
 }
 
-/* ---------- Form ---------- */
 input,
 select {
   font: inherit;
@@ -127,7 +189,6 @@ a:focus-visible {
   min-height: 1.2em;
 }
 
-/* ---------- Nút ---------- */
 .btn {
   font: inherit;
   cursor: pointer;
@@ -147,7 +208,6 @@ a:focus-visible {
   color: var(--pine);
 }
 
-/* ---------- Khung nội dung ---------- */
 .panel {
   background: var(--white);
   border: 1px solid var(--line);
@@ -161,7 +221,6 @@ a:focus-visible {
   color: #5b6b66;
 }
 
-/* ---------- Bảng ---------- */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -181,8 +240,6 @@ td {
   font-weight: 600;
   padding-top: 12px;
 }
-
-/* ---------- Giảm chuyển động nếu người dùng yêu cầu ---------- */
 @media (prefers-reduced-motion: reduce) {
   * {
     transition: none !important;
