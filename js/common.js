@@ -49,13 +49,13 @@ const MENU = [
 
   // ===== Bánh =====
   { id: 39, name: "Bánh cuộn quế",      cat: "Bánh",    price: 35000, img: "images/banh-que.webp" },
-  { id: 39, name: "Bánh tiramisu",      cat: "Bánh",    price: 35000, img: "images/banh-tiramisu.jpg" },
-  { id: 40, name: "Bánh croissant",     cat: "Bánh",    price: 30000, img: "images/banh-croissant.jpg" },
-  { id: 41, name: "Bánh cookie",        cat: "Bánh",    price: 20000, img: "images/banh-cookie.jpg" },
-  { id: 42, name: "Bông lan trứng muối",cat: "Bánh",    price: 35000, img: "images/bong-lan-trung-muoi.jpeg" },
-  { id: 43, name: "Bánh flan",          cat: "Bánh",    price: 20000, img: "images/flan.jpeg" },
-  { id: 44, name: "Bánh su kem",        cat: "Bánh",    price: 25000, img: "images/banh-su-kem.jpeg" },
-  { id: 45, name: "Cheesecake",         cat: "Bánh",    price: 42000, img: "images/cheesecake.webp" },
+  { id: 40, name: "Bánh tiramisu",      cat: "Bánh",    price: 35000, img: "images/banh-tiramisu.jpg" },
+  { id: 41, name: "Bánh croissant",     cat: "Bánh",    price: 30000, img: "images/banh-croissant.jpg" },
+  { id: 42, name: "Bánh cookie",        cat: "Bánh",    price: 20000, img: "images/banh-cookie.jpg" },
+  { id: 43, name: "Bông lan trứng muối",cat: "Bánh",    price: 35000, img: "images/bong-lan-trung-muoi.jpeg" },
+  { id: 44, name: "Bánh flan",          cat: "Bánh",    price: 20000, img: "images/flan.jpeg" },
+  { id: 45, name: "Bánh su kem",        cat: "Bánh",    price: 25000, img: "images/banh-su-kem.jpeg" },
+  { id: 46, name: "Cheesecake",         cat: "Bánh",    price: 42000, img: "images/cheesecake.webp" },
 ];
 
 // ---------- Hàm tiện ích ----------
