@@ -1,7 +1,7 @@
 /* ==========================================================
    TRANG THANH TOÁN
    - Món lấy từ giỏ hàng của trang Gọi món (common.js)
-   - Chọn size, mã giảm giá, kiểm tra form, in hóa đơn
+   - Chọn size, mã giảm giá, hình thức nhận món, kiểm tra form, in hóa đơn
    ========================================================== */
 
 // ---------- Dữ liệu ----------
@@ -11,6 +11,10 @@ const SIZES = {
   L: { label: "Lớn", add: 8000 },
 };
 const CODES = { CAFE10: 0.1, HELLO20: 0.2 };
+
+// Phí giao hàng cố định khi chọn "Giao về nhà"
+const SHIP_FEE = 5000;
+const KIND_LABEL = { table: "Tại bàn", takeaway: "Mang đi", home: "Giao về nhà" };
 
 // ---------- Trạng thái ----------
 let discount = 0; // tỉ lệ giảm giá đang áp dụng (0.1 = 10%)
@@ -36,6 +40,12 @@ const sizeOf = (item, sizes) => {
 
 const unitPrice = (item, size) => item.price + (size ? SIZES[size].add : 0);
 
+// Hình thức nhận món đang chọn: "table" | "takeaway" | "home" | ""
+const getKind = () => {
+  const r = document.querySelector('input[name="kind"]:checked');
+  return r ? r.value : "";
+};
+
 // Các dòng trong hóa đơn, lấy từ giỏ hàng
 function getLines() {
   const cart = getCart();
@@ -53,7 +63,8 @@ function getLines() {
 // ---------- Tính tiền ----------
 const subtotal = () => getLines().reduce((sum, l) => sum + l.unit * l.qty, 0);
 const cutAmount = () => Math.round(subtotal() * discount);
-const total = () => subtotal() - cutAmount();
+const shipAmount = () => (getKind() === "home" ? SHIP_FEE : 0);
+const total = () => subtotal() - cutAmount() + shipAmount();
 
 // ---------- Hiển thị hóa đơn ----------
 function renderSummary() {
@@ -86,6 +97,7 @@ function renderSummary() {
 
   $("sub").textContent = fmt(subtotal());
   $("cut").textContent = "-" + fmt(cutAmount());
+  $("ship").textContent = fmt(shipAmount());
   $("sum").textContent = fmt(total());
   updateChange();
   updateBadge();
@@ -129,6 +141,31 @@ $("apply").addEventListener("click", () => {
   renderSummary();
 });
 
+// ---------- Hình thức nhận món ----------
+// Lấy danh sách bàn từ trang Quản lý bàn (cùng khóa "tables" trong localStorage)
+function renderTableOptions() {
+  const tables = load(
+    "tables",
+    Array.from({ length: 12 }, (_, i) => ({ id: i + 1, seats: i % 3 === 0 ? 2 : 4, busy: false }))
+  );
+  const status = (b) => (b === "booked" ? "đã đặt trước" : b === true ? "đang phục vụ" : "trống");
+  $("table-sel").innerHTML =
+    '<option value="">-- Chọn bàn --</option>' +
+    tables.map((t) => `<option value="${t.id}">Bàn ${t.id} (${t.seats} chỗ) - ${status(t.busy)}</option>`).join("");
+}
+
+document.querySelectorAll('input[name="kind"]').forEach((radio) =>
+  radio.addEventListener("change", () => {
+    const kind = getKind();
+    $("table-box").hidden = kind !== "table";
+    $("addr-box").hidden = kind !== "home";
+    $("e-kind").textContent = "";
+    $("e-table").textContent = "";
+    $("e-address").textContent = "";
+    renderSummary(); // cập nhật phí ship
+  })
+);
+
 // ---------- Sự kiện: phương thức thanh toán ----------
 // Chỉ tiền mặt mới cần nhập tiền khách đưa
 document.querySelectorAll('input[name="method"]').forEach((radio) =>
@@ -147,6 +184,9 @@ $("pay-form").addEventListener("submit", (e) => {
   const phone = $("phone").value.trim();
   const method = document.querySelector('input[name="method"]:checked');
   const cash = parseInt($("cash").value.replace(/\D/g, ""), 10) || 0;
+  const kind = getKind();
+  const tableId = $("table-sel").value;
+  const address = $("address").value.trim();
   let ok = true;
 
   // Hiện lỗi cạnh ô nhập nếu dữ liệu sai
@@ -156,6 +196,9 @@ $("pay-form").addEventListener("submit", (e) => {
   };
   check("e-name", name.length < 2, "Nhập họ tên (ít nhất 2 ký tự).");
   check("e-phone", !/^0\d{9}$/.test(phone), "Số điện thoại gồm 10 chữ số, bắt đầu bằng 0.");
+  check("e-kind", !kind, "Chọn hình thức nhận món.");
+  check("e-table", kind === "table" && !tableId, "Hãy chọn bàn.");
+  check("e-address", kind === "home" && address.length < 5, "Nhập địa chỉ giao hàng (ít nhất 5 ký tự).");
   check("e-method", !method, "Chọn phương thức thanh toán.");
   check("e-cash", method && method.value === "Tiền mặt" && cash < total(), "Tiền khách đưa chưa đủ.");
   check("e-cart", getLines().length === 0, "Hóa đơn trống, hãy chọn món trước.");
@@ -167,10 +210,14 @@ $("pay-form").addEventListener("submit", (e) => {
     time: new Date().toLocaleString("vi-VN"),
     name,
     phone,
+    type: kind, // "table" | "takeaway" | "home"
+    table: kind === "table" ? Number(tableId) : undefined,
+    address: kind === "home" ? address : undefined,
     method: method.value,
     items: getLines().map((l) => ({ name: l.item.name, size: l.size, qty: l.qty, amount: l.unit * l.qty })),
     sub: subtotal(),
     cut: cutAmount(),
+    ship: shipAmount(),
     total: total(),
     cash: method.value === "Tiền mặt" ? cash : 0,
   };
@@ -185,6 +232,8 @@ $("pay-form").addEventListener("submit", (e) => {
   showInvoice(bill);
   e.target.reset();
   $("cash-box").hidden = true;
+  $("table-box").hidden = true;
+  $("addr-box").hidden = true;
   $("code").value = "";
   $("code-msg").textContent = "";
   renderSummary();
@@ -198,6 +247,7 @@ function showInvoice(b) {
     <div class="meta">
       <span>Thời gian:</span><span>${b.time}</span>
       <span>Khách hàng:</span><span>${esc(b.name)} - ${esc(b.phone)}</span>
+      <span>Nhận món:</span><span>${KIND_LABEL[b.type] || "-"}${b.table ? " - Bàn " + b.table : ""}${b.address ? " - " + esc(b.address) : ""}</span>
       <span>Thanh toán:</span><span>${esc(b.method)}</span>
     </div>
     <div class="table-wrap"><table>
@@ -208,6 +258,7 @@ function showInvoice(b) {
     </table></div>
     <div class="total"><span>Tạm tính</span><span>${fmt(b.sub)}</span></div>
     <div class="total"><span>Giảm giá</span><span>-${fmt(b.cut)}</span></div>
+    ${b.ship ? `<div class="total"><span>Phí giao hàng</span><span>${fmt(b.ship)}</span></div>` : ""}
     <div class="total big"><span>Tổng cộng</span><span>${fmt(b.total)}</span></div>
     ${
       b.cash
@@ -226,4 +277,5 @@ function showInvoice(b) {
 }
 
 // ---------- Khởi chạy ----------
+renderTableOptions();
 renderSummary();

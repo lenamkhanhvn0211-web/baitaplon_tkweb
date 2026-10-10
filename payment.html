@@ -26,6 +26,7 @@
 
       <div class="total"><span>Tạm tính</span><span id="sub">0đ</span></div>
       <div class="total"><span>Giảm giá</span><span id="cut">-0đ</span></div>
+      <div class="total"><span>Phí giao hàng</span><span id="ship">0đ</span></div>
       <div class="total big"><span>Thành tiền</span><span id="sum">0đ</span></div>
 
       <div class="field" style="margin-top:16px">
@@ -49,6 +50,27 @@
         <input id="phone" inputmode="numeric" autocomplete="tel">
         <span class="error" id="e-phone"></span>
       </div>
+
+      <fieldset class="field methods">
+        <legend>Hình thức nhận món</legend>
+        <label><input type="radio" name="kind" value="table"> Tại bàn</label>
+        <label><input type="radio" name="kind" value="takeaway"> Mang đi</label>
+        <label><input type="radio" name="kind" value="home"> Giao về nhà (+5.000đ)</label>
+        <span class="error" id="e-kind"></span>
+      </fieldset>
+
+      <div class="field" id="table-box" hidden>
+        <label for="table-sel">Chọn bàn</label>
+        <select id="table-sel"></select>
+        <span class="error" id="e-table"></span>
+      </div>
+
+      <div class="field" id="addr-box" hidden>
+        <label for="address">Địa chỉ giao hàng</label>
+        <input id="address" autocomplete="street-address">
+        <span class="error" id="e-address"></span>
+      </div>
+
       <fieldset class="field methods">
         <legend>Phương thức thanh toán</legend>
         <label><input type="radio" name="method" value="Tiền mặt"> Tiền mặt</label>

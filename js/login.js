@@ -1,7 +1,7 @@
 /* ==========================================================
    TRANG ĐĂNG NHẬP
    - Đăng nhập bằng tài khoản mẫu (khách hàng, admin, nhân viên)
-   - Admin xem được các đơn hàng: đặt tại bàn nào / giao về nhà
+   - Admin xem được các đơn hàng: tại bàn / mang đi / giao về nhà
    ========================================================== */
 
 // Tài khoản thử (chỉ dùng demo, không an toàn cho thực tế)
@@ -25,17 +25,19 @@ const ROLE_LINKS = {
 
 const $ = (id) => document.getElementById(id);
 
-// Bộ lọc đơn hàng đang chọn: "all" | "table" | "home"
+// Bộ lọc đơn hàng đang chọn: "all" | "table" | "takeaway" | "home"
 let orderFilter = "all";
 
 // ---------- Đơn hàng ----------
 
 // Đơn hàng được lưu trong localStorage ("orders").
-// Để admin biết đơn đi đâu, mỗi đơn cần có:
+// Mỗi đơn có:
 //   - Đặt tại bàn:  { type: "table", table: 5 }
+//   - Mang đi:      { type: "takeaway" }
 //   - Giao về nhà:  { type: "home",  address: "12 Lê Lợi, Q1" }
 function orderKind(order) {
   const type = String(order.type || "").toLowerCase();
+  if (type === "takeaway") return "takeaway";
   if (type === "table" || order.table) return "table";
   if (type === "home" || order.address) return "home";
   return "unknown";
@@ -66,6 +68,9 @@ function kindCell(order) {
   if (kind === "table") {
     return `<span class="kind table">Tại bàn ${escapeHtml(order.table || "?")}</span>`;
   }
+  if (kind === "takeaway") {
+    return '<span class="kind takeaway">Mang đi</span>';
+  }
   if (kind === "home") {
     const addr = order.address ? `<span class="sub-line">${escapeHtml(order.address)}</span>` : "";
     return `<span class="kind home">Giao về nhà</span>${addr}`;
@@ -81,10 +86,11 @@ function renderOrders() {
 
   $("order-stats").innerHTML = `
     <div class="stat-box"><span>Tại bàn</span><strong>${count("table")} đơn</strong></div>
+    <div class="stat-box"><span>Mang đi</span><strong>${count("takeaway")} đơn</strong></div>
     <div class="stat-box"><span>Giao về nhà</span><strong>${count("home")} đơn</strong></div>
     <div class="stat-box"><span>Tổng doanh thu</span><strong>${fmt(revenue)}</strong></div>`;
 
-  const filters = [["all", "Tất cả"], ["table", "Tại bàn"], ["home", "Giao về nhà"]];
+  const filters = [["all", "Tất cả"], ["table", "Tại bàn"], ["takeaway", "Mang đi"], ["home", "Giao về nhà"]];
   $("order-filter").innerHTML = filters
     .map(([key, label]) => `<button type="button" class="filter-btn ${key === orderFilter ? "on" : ""}" data-filter="${key}" aria-pressed="${key === orderFilter}">${label}</button>`)
     .join("");

@@ -115,6 +115,11 @@ code {
   color: #1f5c3a;
 }
 
+.kind.takeaway {
+  background: #e4e9f5;
+  color: #2c3e7a;
+}
+
 .kind.home {
   background: #f7ead7;
   color: #7a4b12;
