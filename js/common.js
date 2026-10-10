@@ -129,15 +129,50 @@ function renderHeader() {
         href === "order.html"
           ? ' <span class="badge" id="cart-badge">0</span>'
           : "";
-      return `<a href="${href}" class="${activeClass}">${title}${badge}</a>`;
+      // AUTH: đã đăng nhập thì mục "Đăng nhập" đổi thành "Tài khoản"
+      const label = href === "login.html" && currentUser() ? "Tài khoản" : title;
+      return `<a href="${href}" class="${activeClass}">${label}${badge}</a>`;
     })
     .join("");
 
   document.getElementById("site-header").innerHTML =
-    '<a class="brand" href="index.html">Quán Cà Phê Góc Phố</a>' +
-    `<nav>${navLinks}</nav>`;
+    '<a class="brand" href="index.html">Cà Phê Web</a>' +
+    `<nav>${navLinks}</nav>` +
+    userBoxHtml(); // AUTH: hiện "Xin chào, tên" + nút Đăng xuất khi đã đăng nhập
 
   updateBadge();
 }
 
 document.addEventListener("DOMContentLoaded", renderHeader);
+
+/* ===== AUTH: bắt đầu (đăng nhập hiển thị trên header) ===== */
+
+// Người đang đăng nhập: { username, name, role } hoặc null nếu chưa đăng nhập
+// role: "customer" (khách) | "admin" (quản trị) | "staff" (nhân viên)
+const currentUser = () => load("userInfo", null);
+
+// Chống chèn HTML khi in tên người dùng ra trang
+const escapeHtml = (text) =>
+  String(text).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+// Khối "Xin chào, ... [Đăng xuất]" ở bên phải header
+function userBoxHtml() {
+  const user = currentUser();
+  if (!user) return "";
+  return `<div class="user-box">Xin chào, <strong class="user-name">${escapeHtml(user.name)}</strong>` +
+    `<button type="button" class="logout-btn" id="logout-btn">Đăng xuất</button></div>`;
+}
+
+// Đăng xuất: xóa thông tin đăng nhập rồi về trang Đăng nhập
+function logout() {
+  localStorage.removeItem("user");
+  localStorage.removeItem("userInfo");
+  location.href = "login.html";
+}
+
+// Nút "Đăng xuất" được vẽ lại mỗi lần render header nên dùng ủy quyền sự kiện
+document.addEventListener("click", (e) => {
+  if (e.target.id === "logout-btn") logout();
+});
+
+/* ===== AUTH: kết thúc ===== */

@@ -188,3 +188,38 @@ td {
     transition: none !important;
   }
 }
+
+/* ===== AUTH: bắt đầu (khối người dùng trên header) ===== */
+.user-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.92rem;
+  color: #cfe0da;
+}
+
+.user-name {
+  color: #e8b873; /* sáng hơn --caramel để đủ tương phản trên nền xanh đậm */
+  font-weight: 600;
+}
+
+.logout-btn {
+  font: inherit;
+  font-size: 0.88rem;
+  cursor: pointer;
+  color: #fff;
+  background: #fff2;
+  border: 1px solid #fff4;
+  border-radius: 999px;
+  padding: 3px 14px;
+}
+
+.logout-btn:hover {
+  background: #fff4;
+}
+
+.logout-btn:focus-visible {
+  outline: 2px solid var(--caramel);
+  outline-offset: 2px;
+}
+/* ===== AUTH: kết thúc ===== */

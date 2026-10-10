@@ -1,6 +1,132 @@
 /* CSS riêng trang Đăng nhập */
 
+[hidden] {
+  display: none !important;
+}
+
+h2 {
+  font-size: 1.2rem;
+  margin-bottom: 12px;
+}
+
+/* ---------- Form đăng nhập ---------- */
 .login-box {
   max-width: 380px;
   margin: 40px auto;
+}
+
+.demo-accounts {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+  font-size: 0.88rem;
+  color: #5b6b66;
+}
+
+.demo-accounts ul {
+  margin: 4px 0 0;
+  padding-left: 18px;
+}
+
+code {
+  background: #eef1ec;
+  border-radius: 4px;
+  padding: 1px 5px;
+}
+
+/* ---------- Sau khi đăng nhập ---------- */
+.account-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.role-tag {
+  margin-left: 10px;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: #e3ebe7;
+  color: var(--pine);
+  font-size: 0.85rem;
+}
+
+.account-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.btn-link {
+  text-decoration: none;
+  display: inline-block;
+}
+
+/* ---------- Đơn hàng (admin) ---------- */
+.order-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.stat-box {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px 14px;
+}
+
+.stat-box strong {
+  display: block;
+  font-size: 1.3rem;
+}
+
+.filter-btn {
+  font: inherit;
+  cursor: pointer;
+  border: 1px solid var(--line);
+  background: var(--white);
+  padding: 6px 14px;
+  border-radius: 6px;
+}
+
+.filter-btn.on {
+  background: var(--caramel);
+  border-color: var(--caramel);
+  color: #fff;
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+.kind {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.kind.table {
+  background: #e3f1e8;
+  color: #1f5c3a;
+}
+
+.kind.home {
+  background: #f7ead7;
+  color: #7a4b12;
+}
+
+.kind.unknown {
+  background: #eceeed;
+  color: #555;
+}
+
+.sub-line {
+  display: block;
+  font-size: 0.85rem;
+  color: #5b6b66;
 }

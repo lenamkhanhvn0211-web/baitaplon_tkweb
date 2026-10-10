@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Đăng nhập - Quán Cà Phê Góc Phố</title>
+<title>Đăng nhập - Cà Phê Web</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
@@ -12,13 +12,57 @@
 <body>
 <header id="site-header" class="site-header"></header>
 <main>
-<h1>Đăng nhập</h1>
+<h1 id="page-title">Đăng nhập</h1>
+
+<!-- Form đăng nhập (ẩn khi đã đăng nhập) -->
 <form class="panel login-box" id="login-form" novalidate>
-<div class="field"><label for="user">Tên đăng nhập</label><input id="user" autocomplete="username"><span class="error" id="e-user"></span></div>
-<div class="field"><label for="pass">Mật khẩu</label><input id="pass" type="password" autocomplete="current-password"><span class="error" id="e-pass"></span></div>
-<span class="error" id="e-login"></span>
-<button class="btn" type="submit">Đăng nhập</button>
-<p style="margin-top:12px;font-size:.88rem">Tài khoản thử: admin / 123456</p></form>
+  <div class="field">
+    <label for="user">Tên đăng nhập</label>
+    <input id="user" autocomplete="username">
+    <span class="error" id="e-user"></span>
+  </div>
+  <div class="field">
+    <label for="pass">Mật khẩu</label>
+    <input id="pass" type="password" autocomplete="current-password">
+    <span class="error" id="e-pass"></span>
+  </div>
+  <span class="error" id="e-login"></span>
+  <button class="btn" type="submit">Đăng nhập</button>
+  <div class="demo-accounts">
+    <p>Tài khoản thử:</p>
+    <ul>
+      <li><code>khach</code> / <code>khach123</code> (khách hàng)</li>
+      <li><code>admin</code> / <code>123456</code> (quản trị)</li>
+      <li><code>nhanvien</code> / <code>cafe2026</code> (nhân viên)</li>
+    </ul>
+  </div>
+</form>
+
+<!-- Thông tin tài khoản (hiện khi đã đăng nhập) -->
+<section id="account" hidden>
+  <div class="panel account-head">
+    <div>
+      <strong id="who"></strong>
+      <span class="role-tag" id="role"></span>
+    </div>
+    <div class="account-links" id="account-links"></div>
+  </div>
+
+  <!-- Chỉ admin thấy: danh sách đơn hàng -->
+  <section class="panel" id="orders-panel" hidden>
+    <h2>Đơn hàng đã đặt</h2>
+    <div class="order-stats" id="order-stats"></div>
+    <div class="toolbar" id="order-filter" role="group" aria-label="Lọc đơn hàng"></div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Mã đơn</th><th>Khách hàng</th><th>Hình thức</th><th>Món</th><th>Tổng tiền</th><th>Thanh toán</th></tr>
+        </thead>
+        <tbody id="order-rows"></tbody>
+      </table>
+    </div>
+  </section>
+</section>
 </main>
 <script src="js/common.js"></script>
 <script src="js/login.js"></script>
