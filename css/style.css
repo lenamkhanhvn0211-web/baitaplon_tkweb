@@ -222,3 +222,240 @@ td {
   outline: 2px solid var(--caramel);
   outline-offset: 2px;
 }
+
+/* ==========================================================
+   MENU DỌC BÊN TRÁI: thu gọn thành cột biểu tượng đơn giản,
+   rê chuột vào thì kéo ra hiện chữ
+   Dán đoạn này vào CUỐI file style.css
+   (xóa đoạn sidebar cũ nếu đã dán trước đó)
+   ========================================================== */
+
+:root {
+  --sidebar-closed: 64px;   /* độ rộng khi thụt vào (chỉ còn biểu tượng) */
+  --sidebar-open: 240px;    /* độ rộng khi kéo ra */
+  --sidebar-speed: 0.3s;    /* tốc độ animation */
+
+  /* Biểu tượng nét mảnh, vẽ bằng SVG (không cần tải ảnh, đổi màu theo chữ) */
+  --ico-cup:   url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10 2v2M14 2v2M6 2v2'/%3E%3Cpath d='M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1'/%3E%3C/svg%3E");
+  --ico-menu:  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2'/%3E%3Cpath d='M7 2v20'/%3E%3Cpath d='M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7'/%3E%3C/svg%3E");
+  --ico-cart:  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='8' cy='21' r='1'/%3E%3Ccircle cx='19' cy='21' r='1'/%3E%3Cpath d='M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12'/%3E%3C/svg%3E");
+  --ico-card:  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='2' y='5' width='20' height='14' rx='2'/%3E%3Cpath d='M2 10h20'/%3E%3C/svg%3E");
+  --ico-table: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='3' width='7' height='7' rx='1'/%3E%3Crect x='14' y='3' width='7' height='7' rx='1'/%3E%3Crect x='14' y='14' width='7' height='7' rx='1'/%3E%3Crect x='3' y='14' width='7' height='7' rx='1'/%3E%3C/svg%3E");
+  --ico-user:  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2'/%3E%3Ccircle cx='12' cy='7' r='4'/%3E%3C/svg%3E");
+}
+
+/* Chừa chỗ cho cột biểu tượng (khi kéo ra thì nó đè lên nội dung) */
+body {
+  padding-left: var(--sidebar-closed);
+}
+
+/* ---------- Thanh menu ---------- */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: var(--sidebar-closed);
+  z-index: 100;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  gap: 20px;
+  padding: 22px 10px;
+  background: var(--pine);
+  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  white-space: nowrap;
+  transition: width var(--sidebar-speed) cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow var(--sidebar-speed) ease;
+}
+
+/* Rê chuột vào (hoặc dùng bàn phím Tab vào) thì kéo ra */
+.site-header:hover,
+.site-header:focus-within {
+  width: var(--sidebar-open);
+  box-shadow: 8px 0 28px rgba(0, 0, 0, 0.28);
+}
+
+/* ---------- Biểu tượng (dùng chung cho tên quán và các mục) ---------- */
+.site-header .brand::before,
+.site-header nav a::before {
+  content: "";
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  background-color: currentColor;
+  -webkit-mask: var(--ico) center / contain no-repeat;
+          mask: var(--ico) center / contain no-repeat;
+}
+
+/* ---------- "Cà Phê Web" ---------- */
+.site-header .brand {
+  --ico: var(--ico-cup);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 0;
+  padding: 0 11px 18px;
+  font-size: 0;                    /* thụt vào: ẩn chữ, chỉ còn biểu tượng */
+  border-bottom: 1px solid #fff3;
+}
+
+.site-header .brand::before {
+  width: 26px;
+  height: 26px;
+}
+
+/* ---------- Các mục menu ---------- */
+.site-header nav {
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 6px;
+}
+
+.site-header nav a {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 11px;
+  border-radius: 10px;
+  font-size: 0;                    /* thụt vào: ẩn chữ */
+  transition: background 0.2s ease;
+}
+
+.site-header nav a[href="index.html"]   { --ico: var(--ico-menu); }
+.site-header nav a[href="order.html"]   { --ico: var(--ico-cart); }
+.site-header nav a[href="payment.html"] { --ico: var(--ico-card); }
+.site-header nav a[href="tables.html"]  { --ico: var(--ico-table); }
+.site-header nav a[href="login.html"]   { --ico: var(--ico-user); }
+
+/* Mục đang chọn: nền sáng + vạch caramel bên trái (không làm lệch biểu tượng) */
+.site-header nav a.active {
+  background: #fff2;
+  box-shadow: inset 3px 0 0 var(--caramel);
+  font-weight: 600;
+}
+
+/* Số trên giỏ hàng: thụt vào thì đậu trên góc biểu tượng */
+.site-header .badge {
+  position: absolute;
+  top: 3px;
+  left: 26px;
+  margin: 0;
+  font-size: 0.68rem;
+  line-height: 1.4;
+}
+
+/* ---------- Kéo ra: hiện chữ ---------- */
+.site-header:hover .brand,
+.site-header:focus-within .brand {
+  font-size: 1.25rem;
+}
+
+.site-header:hover nav a,
+.site-header:focus-within nav a {
+  font-size: 1rem;
+}
+
+.site-header:hover .badge,
+.site-header:focus-within .badge {
+  position: static;
+  margin-left: auto;
+  font-size: 0.8rem;
+}
+
+/* ---------- "Xin chào, tên [Đăng xuất]" (chỉ hiện khi kéo ra) ---------- */
+.site-header .user-box {
+  margin-top: auto;
+  display: block;
+  padding: 14px 11px 0;
+  border-top: 1px solid #fff3;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+
+.site-header:hover .user-box,
+.site-header:focus-within .user-box {
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity var(--sidebar-speed) ease 0.1s;
+}
+
+.site-header .logout-btn {
+  display: block;
+  margin: 8px auto 0 0;
+}
+
+/* ---------- Màn hình nhỏ: quay lại thanh ngang phía trên ---------- */
+@media (max-width: 800px) {
+  body {
+    padding-left: 0;
+  }
+  .site-header,
+  .site-header:hover,
+  .site-header:focus-within {
+    position: static;
+    width: auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 24px;
+    padding: 12px 16px;
+    box-shadow: none;
+    white-space: normal;
+    overflow: visible;
+  }
+  .site-header .brand,
+  .site-header:hover .brand,
+  .site-header:focus-within .brand {
+    font-size: 1.2rem;
+    padding: 0;
+    border: 0;
+    margin-right: auto;
+  }
+  .site-header .brand::before,
+  .site-header nav a::before {
+    display: none;
+  }
+  .site-header nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .site-header nav a,
+  .site-header:hover nav a,
+  .site-header:focus-within nav a {
+    font-size: 1rem;
+    padding: 6px 12px;
+  }
+  .site-header nav a.active {
+    box-shadow: none;
+  }
+  .site-header .badge,
+  .site-header:hover .badge {
+    position: static;
+    margin-left: 4px;
+    font-size: 0.8rem;
+  }
+  .site-header .user-box {
+    margin-top: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0;
+    border: 0;
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .site-header .logout-btn {
+    margin: 0;
+  }
+}
+
+/* Khi in hóa đơn: bỏ khoảng chừa bên trái */
+@media print {
+  body {
+    padding-left: 0;
+  }
+}
