@@ -7,7 +7,7 @@
 // Tài khoản thử (chỉ dùng demo, không an toàn cho thực tế)
 // role: "customer" = khách hàng, "admin" = quản trị, "staff" = nhân viên
 const ACCOUNTS = {
-  khach:    { password: "khach123", name: "Nguyễn Quốc Huy", role: "customer" },
+  khach:    { password: "khach123", name: "Nguyễn Vãn A", role: "customer" },
   admin:    { password: "123456",   name: "Quản trị viên",   role: "admin" },
   nhanvien: { password: "cafe2026", name: "Nhân viên",       role: "staff" },
 };
