@@ -59,7 +59,7 @@ function renderMenu() {
         <strong>${m.name}</strong>
         <span>${m.cat}</span>
         <span class="price">${fmt(m.price)}</span>
-        <button class="btn" data-id="${m.id}">Thêm vào giỏ</button>
+        <button class="add-btn" data-id="${m.id}">Thêm vào giỏ</button>
       </div>
     </article>`
     )
@@ -82,9 +82,63 @@ document.getElementById("search").addEventListener("input", (e) => {
   renderMenu();
 });
 
-// Bấm "Thêm vào giỏ"
+// Hiệu ứng: ảnh món bay từ thẻ món vào mục "Gọi món" trên header.
+// onArrive: hàm được gọi khi ảnh đã bay tới giỏ (lúc đó mới tăng số lượng).
+function flyToCart(card, onArrive) {
+  const thumb = card.querySelector(".thumb");
+  const target = document.getElementById("cart-badge") || document.querySelector('nav a[href="order.html"]');
+
+  // Không có gì để bay (hoặc người dùng tắt chuyển động) thì thêm luôn
+  if (
+    !thumb ||
+    !target ||
+    matchMedia("(prefers-reduced-motion: reduce)").matches
+  ) {
+    onArrive();
+    return;
+  }
+
+  const from = thumb.getBoundingClientRect();
+  const to = target.getBoundingClientRect();
+  const size = 70; // kích thước ảnh khi bay
+
+  // Nhân bản ảnh món rồi cho bay (đặt cố định trên màn hình)
+  const flyer = thumb.cloneNode(true);
+  flyer.className = "thumb fly-img";
+  flyer.style.cssText = `left:${from.left + from.width / 2 - size / 2}px;top:${from.top + from.height / 2 - size / 2}px;width:${size}px;height:${size}px;`;
+  document.body.appendChild(flyer);
+
+  const dx = to.left + to.width / 2 - (from.left + from.width / 2);
+  const dy = to.top + to.height / 2 - (from.top + from.height / 2);
+
+  const anim = flyer.animate(
+    [
+      { transform: "translate(0, 0) scale(1)", opacity: 1 },
+      { transform: `translate(${dx * 0.5}px, ${dy * 0.5 - 60}px) scale(0.8)`, opacity: 1, offset: 0.5 },
+      { transform: `translate(${dx}px, ${dy}px) scale(0.2)`, opacity: 0.3 },
+    ],
+    { duration: 750, easing: "cubic-bezier(.5, 0, .7, .4)" }
+  );
+
+  anim.onfinish = () => {
+    flyer.remove();
+    onArrive(); // ảnh đã tới giỏ -> tăng số lượng
+    // Số trên giỏ hàng nảy lên một nhịp
+    const badge = document.getElementById("cart-badge");
+    if (badge) {
+      badge.classList.remove("bump");
+      void badge.offsetWidth; // chạy lại animation
+      badge.classList.add("bump");
+    }
+  };
+}
+
+// Bấm "Thêm vào giỏ": bay trước, bay tới nơi mới cộng vào giỏ
 grid.addEventListener("click", (e) => {
-  if (e.target.dataset.id) addToCart(+e.target.dataset.id);
+  const btn = e.target.closest(".add-btn");
+  if (!btn) return;
+  const id = +btn.dataset.id;
+  flyToCart(btn.closest(".card"), () => addToCart(id));
 });
 
 // ---------- Khởi chạy ----------

@@ -1,5 +1,19 @@
 /* CSS riêng trang Gọi món */
 
+/* Bảng có thêm cột size / đá / đường nên cho rộng hơn */
+main {
+  max-width: 1200px;
+}
+
+/* Bảng quá rộng thì cuộn ngang trong khung, không làm vỡ trang */
+.table-wrap {
+  overflow-x: auto;
+}
+
+.table-wrap td:first-child {
+  white-space: nowrap;
+}
+
 /* ---------- Nút tăng / giảm số lượng ---------- */
 .qty {
   display: inline-flex;
@@ -14,4 +28,336 @@
   border: 1px solid var(--line);
   background: var(--white);
   cursor: pointer;
+}
+
+/* ---------- Ô chọn size / % đá / % đường ---------- */
+.opt-sel {
+  appearance: none;
+  -webkit-appearance: none;
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--pine);
+  cursor: pointer;
+
+  /* Dạng viên thuốc, chừa chỗ bên phải cho mũi tên */
+  padding: 7px 36px 7px 16px;
+  border: 1.5px solid var(--line);
+  border-radius: 999px;
+  background-color: #f5f8f4;
+
+  /* Mũi tên xổ xuống tự vẽ bằng SVG */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231e3b34' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 13px center;
+  background-size: 14px;
+
+  transition: border-color 0.18s ease, background-color 0.18s ease,
+              box-shadow 0.18s ease;
+}
+
+/* Độ rộng: size cần rộng hơn vì có chữ "Lớn (+8.000đ)", đá / đường chỉ là số */
+.opt-sel[data-field="size"] {
+  min-width: 156px;
+}
+
+.opt-sel[data-field="ice"],
+.opt-sel[data-field="sugar"] {
+  min-width: 92px;
+}
+
+/* Rê chuột: viền caramel, nền trắng */
+.opt-sel:hover {
+  border-color: var(--caramel);
+  background-color: var(--white);
+}
+
+/* Đang chọn (bấm hoặc dùng bàn phím) */
+.opt-sel:focus,
+.opt-sel:focus-visible {
+  outline: none;
+  border-color: var(--caramel);
+  background-color: var(--white);
+  box-shadow: 0 0 0 3px rgba(196, 135, 59, 0.22);
+}
+
+/* Danh sách xổ xuống */
+.opt-sel option {
+  color: var(--ink);
+  background: var(--white);
+}
+
+/* ---------- Ghi chú dưới bảng ---------- */
+.note {
+  font-size: 0.88rem;
+  color: #5b6b66;
+  margin-top: 12px;
+}
+
+/* =====================================================
+   Bộ chỉnh đá / đường: hình cốc + 2 mũi tên tăng giảm
+   (được js/order-stepper.js gắn bên cạnh mỗi ô .opt-sel)
+   ===================================================== */
+td.has-stepper {
+  white-space: nowrap;
+}
+
+.opt-stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 10px;
+  vertical-align: middle;
+}
+
+.opt-icon {
+  display: inline-flex;
+  width: 34px;
+  height: 38px;
+}
+
+.opt-icon svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* Cặp mũi tên xếp dọc: lên = nhiều hơn, xuống = ít hơn */
+.opt-arrows {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.opt-arrow {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 18px;
+  padding: 0;
+  border: 1.5px solid var(--line);
+  border-radius: 999px;
+  background: #f5f8f4;
+  color: var(--pine);
+  cursor: pointer;
+  transition: border-color 0.18s ease, background-color 0.18s ease,
+              transform 0.12s ease, opacity 0.18s ease;
+}
+
+.opt-arrow svg {
+  width: 12px;
+  height: 12px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.opt-arrow:hover:not(:disabled) {
+  border-color: var(--caramel);
+  background: var(--white);
+}
+
+.opt-arrow:active:not(:disabled) {
+  transform: scale(0.88);
+}
+
+.opt-arrow:focus-visible {
+  outline: none;
+  border-color: var(--caramel);
+  box-shadow: 0 0 0 3px rgba(196, 135, 59, 0.22);
+}
+
+.opt-arrow:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* ---------- Cốc đá ---------- */
+.ice-glass {
+  fill: rgba(255, 255, 255, 0.35);
+  stroke: var(--pine);
+  stroke-width: 1.8;
+  stroke-linejoin: round;
+}
+
+.ice-liquid {
+  fill: rgba(196, 135, 59, 0.3);
+}
+
+.ice-straw {
+  fill: none;
+  stroke: var(--caramel);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+}
+
+.ice-cube {
+  transform-box: fill-box;
+  transform-origin: center;
+  opacity: 0;
+  transform: scale(0.1);
+}
+
+.ice-cube rect {
+  fill: rgba(255, 255, 255, 0.88);
+  stroke: #6fa8c4;
+  stroke-width: 1.2;
+}
+
+.ice-cube path {
+  fill: none;
+  stroke: #6fa8c4;
+  stroke-width: 1;
+  stroke-linecap: round;
+}
+
+.ice-cube.is-on {
+  opacity: 1;
+  transform: none;
+}
+
+/* Thêm đá: viên đá rơi xuống, nảy nhẹ */
+.ice-cube.dropping {
+  animation: iceDrop 0.55s cubic-bezier(0.3, 1.2, 0.5, 1) both;
+}
+
+/* Bớt đá: viên đá tan dần, chìm xuống */
+.ice-cube.melting {
+  animation: iceMelt 0.6s ease-in both;
+}
+
+@keyframes iceDrop {
+  0%   { opacity: 0; transform: translateY(-18px) rotate(-35deg) scale(0.7); }
+  55%  { opacity: 1; transform: translateY(2px) rotate(8deg) scale(1.06); }
+  78%  { transform: translateY(-1.5px) rotate(-3deg) scale(0.98); }
+  100% { opacity: 1; transform: none; }
+}
+
+@keyframes iceMelt {
+  0%   { opacity: 1; transform: none; }
+  40%  { opacity: 0.85; transform: translateY(1px) rotate(6deg) scale(0.86); }
+  100% { opacity: 0; transform: translateY(5px) rotate(14deg) scale(0.1); }
+}
+
+/* Gợn sóng trên mặt nước mỗi lần chỉnh */
+.ice-ripple {
+  fill: none;
+  stroke: rgba(111, 168, 196, 0.9);
+  stroke-width: 1.2;
+  transform-box: fill-box;
+  transform-origin: center;
+  opacity: 0;
+}
+
+.ice-ripple.go {
+  animation: iceRipple 0.6s ease-out both;
+}
+
+@keyframes iceRipple {
+  0%   { opacity: 0.9; transform: scale(0.3, 0.6); }
+  100% { opacity: 0;   transform: scale(1.5, 1.2); }
+}
+
+/* ---------- Hũ đường ---------- */
+.sg-bowl {
+  fill: var(--white);
+  stroke: var(--pine);
+  stroke-width: 1.8;
+  stroke-linejoin: round;
+}
+
+.sg-pile {
+  --lv: 1;
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  transform: scale(calc(0.7 + 0.3 * var(--lv)), var(--lv));
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.sg-pile path {
+  fill: #fffaf0;
+  stroke: #d8c69a;
+  stroke-width: 1.3;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.sg-pile circle {
+  fill: #e6d8b4;
+}
+
+.sg-grain {
+  fill: #f1e3bd;
+  stroke: #d8c69a;
+  stroke-width: 0.6;
+  opacity: 0;
+}
+
+/* Thêm đường: hạt đường rơi vào hũ */
+.sg-grains.falling .sg-grain {
+  animation: sgFall 0.6s ease-in both;
+}
+
+/* Bớt đường: hạt đường bay đi */
+.sg-grains.blowing .sg-grain {
+  animation: sgBlow 0.6s ease-out both;
+}
+
+.sg-grain:nth-child(1) { --dx: -9px; animation-delay: 0s !important; }
+.sg-grain:nth-child(2) { --dx: 3px;  animation-delay: 0.07s !important; }
+.sg-grain:nth-child(3) { --dx: 10px; animation-delay: 0.14s !important; }
+.sg-grain:nth-child(4) { --dx: -4px; animation-delay: 0.04s !important; }
+.sg-grain:nth-child(5) { --dx: 7px;  animation-delay: 0.1s !important; }
+
+@keyframes sgFall {
+  0%   { opacity: 0; transform: translateY(-16px); }
+  25%  { opacity: 1; }
+  80%  { opacity: 1; }
+  100% { opacity: 0; transform: translateY(5px); }
+}
+
+@keyframes sgBlow {
+  0%   { opacity: 1; transform: translate(0, 0); }
+  100% { opacity: 0; transform: translate(var(--dx), -16px); }
+}
+
+/* Cả hình nảy / lắc nhẹ mỗi lần bấm */
+.opt-icon.bump svg {
+  animation: iconBump 0.4s ease both;
+}
+
+.opt-icon.bump-sugar svg {
+  animation: bowlShake 0.45s ease both;
+}
+
+@keyframes iconBump {
+  0%   { transform: scale(1) rotate(0); }
+  30%  { transform: scale(0.92) rotate(-5deg); }
+  65%  { transform: scale(1.06) rotate(3deg); }
+  100% { transform: scale(1) rotate(0); }
+}
+
+@keyframes bowlShake {
+  0%   { transform: translateX(0); }
+  25%  { transform: translateX(-2px) rotate(-3deg); }
+  60%  { transform: translateX(2px) rotate(3deg); }
+  100% { transform: translateX(0) rotate(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ice-cube.dropping,
+  .ice-cube.melting,
+  .ice-ripple.go,
+  .sg-grains.falling .sg-grain,
+  .sg-grains.blowing .sg-grain,
+  .opt-icon.bump svg,
+  .opt-icon.bump-sugar svg {
+    animation: none;
+  }
+
+  .sg-pile {
+    transition: none;
+  }
 }

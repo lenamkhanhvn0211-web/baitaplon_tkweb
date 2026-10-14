@@ -1,37 +1,71 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/reset.css">
-    <link rel="stylesheet" href="css/login.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <title>Đăng nhập - Cà phê web</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Đăng nhập - Cà Phê Web</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/login.css">
 </head>
 <body>
-    <div id="wrapper">
-        <form action="" id="form-login" autocomplete="off">
-            <h1 class="form-heading">ĐĂNG NHẬP</h1>
-            <div class="form-group">
-                <i class="fas fa-user" aria-hidden="true"></i>
-                <input type="text" class="form-input" id="username" placeholder="Tên đăng nhập" autocomplete="new-password">
-            </div>
-            <div class="form-group">
-                <i class="fas fa-lock" aria-hidden="true"></i>
-                <input type="password" class="form-input" id="password" placeholder="Mật khẩu" autocomplete="new-password">
-                <div id="eye">
-                    <i class="fas fa-eye" aria-hidden="true"></i>
-                </div>
-            </div>
-            <input type="submit" value="Đăng nhập" class="form-submit">
-            <div class="form-redirect">
-                Chưa có tài khoản? <a href="register.html">Đăng ký ngay</a>
-            </div>
-        </form>
+<header id="site-header" class="site-header"></header>
+<main>
+<h1 id="page-title">Đăng nhập</h1>
+
+<!-- Form đăng nhập (ẩn khi đã đăng nhập) -->
+<form class="panel login-box" id="login-form" novalidate>
+  <div class="field">
+    <label for="user">Tên đăng nhập</label>
+    <input id="user" autocomplete="username">
+    <span class="error" id="e-user"></span>
+  </div>
+  <div class="field">
+    <label for="pass">Mật khẩu</label>
+    <input id="pass" type="password" autocomplete="current-password">
+    <span class="error" id="e-pass"></span>
+  </div>
+  <span class="error" id="e-login"></span>
+  <button class="btn" type="submit">Đăng nhập</button>
+  <div class="demo-accounts">
+    <p>Tài khoản thử:</p>
+    <ul>
+      <li><code>khach</code> / <code>khach123</code> (khách hàng)</li>
+      <li><code>admin</code> / <code>123456</code> (quản trị)</li>
+      <li><code>nhanvien</code> / <code>cafe2026</code> (nhân viên)</li>
+    </ul>
+  </div>
+</form>
+
+<!-- Thông tin tài khoản (hiện khi đã đăng nhập) -->
+<section id="account" hidden>
+  <div class="panel account-head">
+    <div>
+      <strong id="who"></strong>
+      <span class="role-tag" id="role"></span>
     </div>
+    <div class="account-links" id="account-links"></div>
+  </div>
+
+  <!-- Chỉ admin thấy: danh sách đơn hàng -->
+  <section class="panel" id="orders-panel" hidden>
+    <h2>Đơn hàng đã đặt</h2>
+    <div class="order-stats" id="order-stats"></div>
+    <div class="toolbar" id="order-filter" role="group" aria-label="Lọc đơn hàng"></div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Mã đơn</th><th>Khách hàng</th><th>Hình thức</th><th>Món</th><th>Tổng tiền</th><th>Thanh toán</th></tr>
+        </thead>
+        <tbody id="order-rows"></tbody>
+      </table>
+    </div>
+  </section>
+</section>
+</main>
+<script src="js/common.js"></script>
+<script src="js/login.js"></script>
 </body>
 <script src="https://code.jquery.com/jquery-4.0.0.js"></script>
 <script src="js/login.js"></script>
