@@ -25,6 +25,14 @@ const ROLE_LINKS = {
 
 const $ = (id) => document.getElementById(id);
 
+// Trang cần đăng nhập mới vào được: login.html?next=payment.html
+// Chỉ nhận các trang trong danh sách này (tránh chuyển hướng ra ngoài)
+const NEXT_PAGES = ["payment.html"];
+const nextPage = () => {
+  const n = new URLSearchParams(location.search).get("next");
+  return NEXT_PAGES.includes(n) ? n : null;
+};
+
 // Bộ lọc đơn hàng đang chọn: "all" | "table" | "takeaway" | "home"
 let orderFilter = "all";
 
@@ -120,6 +128,7 @@ function render() {
   $("account").hidden = !user;
   $("page-title").textContent = user ? "Tài khoản" : "Đăng nhập";
   document.title = (user ? "Tài khoản" : "Đăng nhập") + " - Cà Phê Web";
+  $("login-note").hidden = !nextPage();
   if (!user) return;
 
   $("who").textContent = user.name;
@@ -171,6 +180,10 @@ $("login-form").addEventListener("submit", (e) => {
   e.target.reset();
   renderHeader();
   render();
+
+  // Đang đi thanh toán thì quay lại trang đó
+  const next = nextPage();
+  if (next) location.href = next;
 });
 
 // ---------- Khởi chạy ----------

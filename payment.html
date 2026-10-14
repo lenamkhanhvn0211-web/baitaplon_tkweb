@@ -90,6 +90,10 @@
   <section class="panel" id="invoice" hidden></section>
 </main>
 <script src="js/common.js"></script>
+<script>
+  // Chưa đăng nhập thì chuyển sang trang Đăng nhập, xong sẽ quay lại đây
+  if (!currentUser()) location.replace("login.html?next=payment.html");
+</script>
 <script src="js/payment.js"></script>
 </body>
 </html>
