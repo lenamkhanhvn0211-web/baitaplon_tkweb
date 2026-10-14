@@ -136,7 +136,7 @@ function renderHeader() {
     .join("");
 
   document.getElementById("site-header").innerHTML =
-    '<a class="brand" href="index.html">Cà Phê Web</a>' +
+    '<a class="brand" href="menu.html">Cà Phê Web</a>' +
     `<nav>${navLinks}</nav>` +
     userBoxHtml(); // AUTH: hiện "Xin chào, tên" + nút Đăng xuất khi đã đăng nhập
 

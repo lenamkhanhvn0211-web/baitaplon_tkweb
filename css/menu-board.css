@@ -1,0 +1,257 @@
+/* CSS riêng trang Menu (khuyến mãi + bảng giá: tên .......... giá) */
+
+.board-intro {
+  color: #5b6b66;
+  margin: 20px 0 0;
+}
+
+.board-intro a {
+  color: var(--pine);
+  font-weight: 600;
+}
+
+/* ---------- Khuyến mãi (lướt ngang) ---------- */
+.promo {
+  position: relative;
+}
+
+.promo-track {
+  position: relative;
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  border-radius: 16px;
+}
+
+.promo-track::-webkit-scrollbar {
+  display: none;
+}
+
+.promo-slide {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+  display: grid;
+  grid-template-columns: 2fr 3fr;
+  min-height: 240px;
+  background: var(--pine);
+  color: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.promo-img {
+  display: grid;
+  place-items: center;
+  background: #efe3cc;
+  color: var(--pine);
+  font-size: 3rem;
+  font-weight: 600;
+}
+
+.promo-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.promo-body {
+  padding: 24px 56px 40px 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+}
+
+.promo-badge {
+  align-self: flex-start;
+  padding: 2px 12px;
+  border-radius: 999px;
+  background: var(--caramel);
+  font-weight: 600;
+}
+
+.promo-body h2 {
+  font-size: 1.7rem;
+  line-height: 1.25;
+}
+
+.promo-body p {
+  color: #cfe0da;
+}
+
+.promo-prices {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.promo-old {
+  color: #9fb8af;
+  text-decoration: line-through;
+}
+
+.promo-new {
+  color: #e8b873; /* sáng hơn --caramel để đủ tương phản trên nền xanh đậm */
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+/* Nút trái / phải */
+.promo-nav {
+  position: absolute;
+  top: calc(50% - 20px);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 0;
+  background: #fffe;
+  color: var(--pine);
+  font: inherit;
+  font-size: 1.6rem;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.promo-nav:hover {
+  background: #fff;
+}
+
+.promo-nav.prev {
+  left: 10px;
+}
+
+.promo-nav.next {
+  right: 10px;
+}
+
+/* Chấm chỉ vị trí */
+.promo-dots {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 12px;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.promo-dots button {
+  width: 10px;
+  height: 10px;
+  padding: 0;
+  border-radius: 50%;
+  border: 0;
+  background: #fff6;
+  cursor: pointer;
+}
+
+.promo-dots button.on {
+  background: #fff;
+}
+
+/* ---------- Từng danh mục ---------- */
+.board-section {
+  padding-top: 28px;
+}
+
+.board-section h2 {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  font-size: 1.5rem;
+  margin-bottom: 4px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--pine);
+}
+
+.board-section h2 small {
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: #5b6b66;
+}
+
+.board-list {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 40px;
+}
+
+.board-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+/* ---------- Ảnh nhỏ ---------- */
+.board-thumb {
+  flex: 0 0 56px;
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  background: #efe3cc;
+  color: var(--pine);
+  font-weight: 600;
+  font-size: 1.3rem;
+}
+
+.board-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ---------- Tên ........ giá ---------- */
+.board-name {
+  flex: 1;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0;
+}
+
+.board-name strong {
+  font-weight: 600;
+}
+
+.board-dots {
+  flex: 1;
+  min-width: 16px;
+  border-bottom: 2px dotted #b9c2b8;
+  transform: translateY(-4px);
+}
+
+.board-price {
+  color: var(--caramel);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* ---------- Màn hình nhỏ ---------- */
+@media (max-width: 700px) {
+  .board-list {
+    grid-template-columns: 1fr;
+  }
+  .promo-slide {
+    grid-template-columns: 1fr;
+    grid-template-rows: 150px auto;
+  }
+  .promo-body {
+    padding: 20px 20px 40px;
+  }
+  .promo-nav {
+    top: 65px;
+  }
+}
