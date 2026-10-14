@@ -12,10 +12,10 @@ const SHOP_INFO = {
   hours: "Mỗi ngày 7:00 - 22:00",
   phone: "0900000000",
   email: "capheweb@gmail.com",
-  facebook: "https://facebook.com",
-  instagram: "https://instagram.com",
-  youtube: "https://youtube.com",
-  tiktok: "https://tiktok.com",
+  facebook: "https://facebook.com/TEN_FANPAGE_CUA_QUAN",
+  instagram: "https://instagram.com/TEN_TAI_KHOAN",
+  youtube: "https://youtube.com/@TEN_KENH",
+  tiktok: "https://tiktok.com/@TEN_TAI_KHOAN",
 };
 
 (function () {

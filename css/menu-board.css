@@ -1,5 +1,20 @@
 /* CSS riêng trang Menu (khuyến mãi + bảng giá: tên .......... giá) */
 
+/* Tiêu đề chỉ dành cho trình đọc màn hình, không hiện trên trang */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Khuyến mãi nằm sát đầu trang */
+main {
+  padding-top: 16px;
+}
+
 .board-intro {
   color: #5b6b66;
   margin: 20px 0 0;
