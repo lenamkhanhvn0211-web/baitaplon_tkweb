@@ -86,3 +86,200 @@
   border-color: #ff9800;
   background: #fff3e0;
 }
+
+/* ---------- Sơ đồ quán ---------- */
+main {
+  max-width: 1200px;
+}
+
+.plan-hint {
+  color: #5b6b66;
+  font-size: 0.92rem;
+  margin-bottom: 8px;
+}
+.plan-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+}
+.plan {
+  position: relative;
+  min-width: 760px;
+}
+.plan img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.hotspots {
+  position: absolute;
+  inset: 0;
+}
+
+.hot {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 8.2%;
+  min-height: 7.5%;
+  padding: 2px 3px;
+  font: inherit;
+  font-size: clamp(9px, 1.05vw, 13px);
+  line-height: 1.25;
+  text-align: center;
+  cursor: pointer;
+  color: var(--ink);
+  border: 2px solid var(--ok);
+  border-radius: 8px;
+  background: #e3f1e8;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+.hot small {
+  display: block;
+  font-size: 0.85em;
+}
+.hot:hover {
+  transform: translate(-50%, -50%) scale(1.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  z-index: 2;
+}
+.hot .timer {
+  font-weight: 600;
+  color: var(--danger);
+  font-variant-numeric: tabular-nums;
+}
+.info-card .live {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.hot.busy {
+  border-color: var(--danger);
+  background: #f6e0de;
+}
+.hot.booked {
+  border-color: #ff9800;
+  background: #fff3e0;
+}
+
+/* ---------- Hộp đặt lịch ---------- */
+.book {
+  width: min(520px, calc(100% - 24px));
+  border: 0;
+  border-radius: 12px;
+  padding: 0;
+  color: var(--ink);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+}
+.book::backdrop {
+  background: rgba(20, 35, 30, 0.55);
+}
+.book-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  background: var(--pine);
+  color: #fff;
+}
+.book-head h2 {
+  font-size: 1.15rem;
+}
+.book-x {
+  font: inherit;
+  font-size: 1.6rem;
+  line-height: 1;
+  color: #fff;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+#book-body {
+  padding: 18px 20px 20px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.seg {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  padding: 4px;
+  margin-bottom: 16px;
+  background: #eef1ec;
+  border-radius: 10px;
+}
+.seg button {
+  font: inherit;
+  padding: 8px 4px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+}
+.seg button.on {
+  background: var(--pine);
+  color: #fff;
+  font-weight: 600;
+}
+
+.row2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.book textarea {
+  font: inherit;
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  resize: vertical;
+}
+.book-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+.book-actions .btn {
+  flex: 1 1 auto;
+}
+.btn.danger {
+  background: var(--danger);
+  border-color: var(--danger);
+}
+.btn.accent {
+  background: var(--caramel);
+  border-color: var(--caramel);
+}
+
+.info-card {
+  padding: 12px 14px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: #fafbf9;
+}
+.info-card.booked {
+  background: #fff3e0;
+  border-color: #ff9800;
+}
+.info-card.busy {
+  background: #f6e0de;
+  border-color: var(--danger);
+}
+.info-card dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2px 14px;
+  margin-top: 6px;
+}
+.info-card dt {
+  color: #5b6b66;
+}
+.book-note {
+  font-size: 0.88rem;
+  color: #5b6b66;
+  margin-top: 10px;
+}

@@ -42,12 +42,39 @@
           >
         </div>
       </div>
+
       <div class="toolbar">
-        <span id="stat" class="panel" style="padding: 6px 14px"></span
-        ><button class="btn ghost" id="reset">Đặt lại tất cả bàn</button>
+        <span id="stat" class="panel" style="padding: 6px 14px"></span>
+        <button class="btn ghost" id="reset">Đặt lại tất cả bàn</button>
+        <button class="btn" id="new-takeaway">Đặt mang đi</button>
+        <button class="btn" id="new-home">Giao về nhà</button>
       </div>
-      <section id="tables" class="tables"></section>
+
+      <p class="plan-hint">
+        Bấm vào một bàn trên sơ đồ để đặt lịch hoặc gọi món.
+      </p>
+      <div class="plan-wrap">
+        <div class="plan">
+          <img
+            src="images/so do ban chinh sua 2.png"
+            alt="Sơ đồ quán: khu trong nhà và khu ngoài trời"
+          />
+          <div id="tables" class="hotspots"></div>
+        </div>
+      </div>
     </main>
+
+    <!-- Hộp đặt lịch -->
+    <dialog id="book" class="book" aria-labelledby="book-title">
+      <div class="book-head">
+        <h2 id="book-title">Đặt lịch</h2>
+        <button type="button" class="book-x" data-act="close" aria-label="Đóng">
+          &times;
+        </button>
+      </div>
+      <div id="book-body"></div>
+    </dialog>
+
     <script src="js/common.js"></script>
     <script src="js/tables.js"></script>
   </body>
