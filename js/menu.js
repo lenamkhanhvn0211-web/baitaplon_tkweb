@@ -82,11 +82,21 @@ document.getElementById("search").addEventListener("input", (e) => {
   renderMenu();
 });
 
-// Hiệu ứng: ảnh món bay từ thẻ món vào mục "Gọi món" trên header
-function flyToCart(card) {
+// Hiệu ứng: ảnh món bay từ thẻ món vào mục "Gọi món" trên header.
+// onArrive: hàm được gọi khi ảnh đã bay tới giỏ (lúc đó mới tăng số lượng).
+function flyToCart(card, onArrive) {
   const thumb = card.querySelector(".thumb");
   const target = document.getElementById("cart-badge") || document.querySelector('nav a[href="order.html"]');
-  if (!thumb || !target) return;
+
+  // Không có gì để bay (hoặc người dùng tắt chuyển động) thì thêm luôn
+  if (
+    !thumb ||
+    !target ||
+    matchMedia("(prefers-reduced-motion: reduce)").matches
+  ) {
+    onArrive();
+    return;
+  }
 
   const from = thumb.getBoundingClientRect();
   const to = target.getBoundingClientRect();
@@ -101,12 +111,6 @@ function flyToCart(card) {
   const dx = to.left + to.width / 2 - (from.left + from.width / 2);
   const dy = to.top + to.height / 2 - (from.top + from.height / 2);
 
-  // Người dùng tắt chuyển động thì bỏ qua animation
-  if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    flyer.remove();
-    return;
-  }
-
   const anim = flyer.animate(
     [
       { transform: "translate(0, 0) scale(1)", opacity: 1 },
@@ -118,6 +122,7 @@ function flyToCart(card) {
 
   anim.onfinish = () => {
     flyer.remove();
+    onArrive(); // ảnh đã tới giỏ -> tăng số lượng
     // Số trên giỏ hàng nảy lên một nhịp
     const badge = document.getElementById("cart-badge");
     if (badge) {
@@ -128,12 +133,12 @@ function flyToCart(card) {
   };
 }
 
-// Bấm "Thêm vào giỏ"
+// Bấm "Thêm vào giỏ": bay trước, bay tới nơi mới cộng vào giỏ
 grid.addEventListener("click", (e) => {
   const btn = e.target.closest(".add-btn");
   if (!btn) return;
-  addToCart(+btn.dataset.id);
-  flyToCart(btn.closest(".card"));
+  const id = +btn.dataset.id;
+  flyToCart(btn.closest(".card"), () => addToCart(id));
 });
 
 // ---------- Khởi chạy ----------
