@@ -8,14 +8,14 @@
 const SHOP_INFO = {
   name: "Cà Phê Web",
   slogan: "Một góc nhỏ để ngồi xuống, uống ly cà phê ngon và trò chuyện thật lâu.",
-  address: "12 Phố Huế, Hai Bà Trưng, Hà Nội",
+  address: "Số 3 phố Cầu Giấy, Phường Láng, Quận Đống Đa, TP. Hà Nội",
   hours: "Mỗi ngày 7:00 - 22:00",
   phone: "0900000000",
   email: "capheweb@gmail.com",
-  facebook: "https://facebook.com/TEN_FANPAGE_CUA_QUAN",
-  instagram: "https://instagram.com/TEN_TAI_KHOAN",
-  youtube: "https://youtube.com/@TEN_KENH",
-  tiktok: "https://tiktok.com/@TEN_TAI_KHOAN",
+  facebook: "https://facebook.com",
+  instagram: "https://instagram.com",
+  youtube: "https://youtube.com",
+  tiktok: "https://tiktok.com",
 };
 
 (function () {
