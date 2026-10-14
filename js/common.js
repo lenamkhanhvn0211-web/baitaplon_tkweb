@@ -131,7 +131,9 @@ const saveCart = (lines) => save("cartLines", lines);
 const lineUnit = (line) => {
   const item = MENU.find((m) => m.id == line.id);
   if (!item) return 0;
-  return item.price + (hasOptions(item) && SIZES[line.size] ? SIZES[line.size].add : 0);
+  // Món khuyến mãi (line.off = % giảm): giảm giá gốc, làm tròn nghìn đồng, rồi mới cộng size
+  const base = line.off ? Math.round((item.price * (100 - line.off)) / 100 / 1000) * 1000 : item.price;
+  return base + (hasOptions(item) && SIZES[line.size] ? SIZES[line.size].add : 0);
 };
 
 // Tổng số lượng món trong giỏ
@@ -141,9 +143,9 @@ const cartCount = () => getCart().reduce((sum, l) => sum + l.qty, 0);
 const cartTotal = () => getCart().reduce((sum, l) => sum + lineUnit(l) * l.qty, 0);
 
 // Thêm 1 món vào giỏ: luôn tạo DÒNG MỚI với tùy chọn mặc định
-function addToCart(id) {
+function addToCart(id, off = 0) {
   const lines = getCart();
-  lines.push({ uid: newUid(), id: Number(id), size: "M", ice: 100, sugar: 100, qty: 1 });
+  lines.push({ uid: newUid(), id: Number(id), size: "M", ice: 100, sugar: 100, qty: 1, ...(off ? { off } : {}) });
   saveCart(lines);
   updateBadge();
 }

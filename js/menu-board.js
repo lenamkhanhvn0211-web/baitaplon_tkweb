@@ -24,7 +24,7 @@ const promoItems = PROMOS.map((p) => ({ ...p, item: MENU.find((m) => m.id === p.
 track.innerHTML = promoItems
   .map(
     ({ item, off, note }, i) => `
-    <article class="promo-slide" aria-roledescription="slide" aria-label="${i + 1} / ${promoItems.length}">
+    <article class="promo-slide" data-i="${i}" aria-roledescription="slide" aria-label="${i + 1} / ${promoItems.length}">
       <div class="promo-img">${
         item.img ? `<img src="${item.img}" alt="${item.name}">` : `<span aria-hidden="true">${item.name[0]}</span>`
       }</div>
@@ -36,6 +36,7 @@ track.innerHTML = promoItems
           <span class="promo-new">${fmt(promoPrice(item.price, off))}</span>
           <span class="promo-old">${fmt(item.price)}</span>
         </div>
+        <button type="button" class="promo-cta">Đặt ngay</button>
       </div>
     </article>`
   )
@@ -68,6 +69,14 @@ dotsEl.addEventListener("click", (e) => {
 });
 document.getElementById("promo-prev").addEventListener("click", () => goTo(current() - 1));
 document.getElementById("promo-next").addEventListener("click", () => goTo(current() + 1));
+// Bấm vào món khuyến mãi: thêm vào giỏ (giá đã giảm) rồi sang trang Gọi món
+track.addEventListener("click", (e) => {
+  const slide = e.target.closest(".promo-slide");
+  if (!slide) return;
+  const p = promoItems[+slide.dataset.i];
+  addToCart(p.item.id, p.off);
+  location.href = "order.html";
+});
 track.addEventListener("keydown", (e) => {
   if (e.key === "ArrowLeft") goTo(current() - 1);
   if (e.key === "ArrowRight") goTo(current() + 1);
