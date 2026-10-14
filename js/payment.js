@@ -1,15 +1,11 @@
 /* ==========================================================
    TRANG THANH TOÁN
-   - Món lấy từ giỏ hàng của trang Gọi món (common.js)
-   - Chọn size, mã giảm giá, hình thức nhận món, kiểm tra form, in hóa đơn
+   - Món lấy từ giỏ hàng của trang Gọi món (chỉ xem, không sửa ở đây)
+   - Size / % đá / % đường được chọn ở trang Gọi món
+   - Mã giảm giá, hình thức nhận món, kiểm tra form, in hóa đơn
    ========================================================== */
 
 // ---------- Dữ liệu ----------
-const SIZES = {
-  S: { label: "Nhỏ", add: -5000 },
-  M: { label: "Vừa", add: 0 },
-  L: { label: "Lớn", add: 8000 },
-};
 const CODES = { CAFE10: 0.1, HELLO20: 0.2 };
 
 // Phí giao hàng cố định khi chọn "Giao về nhà"
@@ -26,19 +22,7 @@ const $ = (id) => document.getElementById(id);
 const esc = (s) =>
   String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
-const fmtAdd = (n) => (n ? (n > 0 ? " (+" : " (-") + fmt(Math.abs(n)) + ")" : "");
-
-// Bánh không có size
-const hasSize = (item) => item.cat !== "Bánh";
-
-// Size của từng món lưu riêng: { idMón: "S" | "M" | "L" }, mặc định là Vừa
-const getSizes = () => load("sizes", {});
-const sizeOf = (item, sizes) => {
-  if (!hasSize(item)) return "";
-  return SIZES[sizes[item.id]] ? sizes[item.id] : "M";
-};
-
-const unitPrice = (item, size) => item.price + (size ? SIZES[size].add : 0);
+// (SIZES, hasOptions, lineUnit, getCart... nằm trong common.js)
 
 // Hình thức nhận món đang chọn: "table" | "takeaway" | "home" | ""
 const getKind = () => {
@@ -46,16 +30,21 @@ const getKind = () => {
   return r ? r.value : "";
 };
 
-// Các dòng trong hóa đơn, lấy từ giỏ hàng
+// Các dòng trong hóa đơn, lấy từ giỏ hàng (mỗi dòng có size / đá / đường riêng)
 function getLines() {
-  const cart = getCart();
-  const sizes = getSizes();
-  return Object.keys(cart)
-    .map((id) => {
-      const item = MENU.find((m) => m.id == id);
+  return getCart()
+    .map((l) => {
+      const item = MENU.find((m) => m.id == l.id);
       if (!item) return null;
-      const size = sizeOf(item, sizes);
-      return { item, qty: cart[id], size, unit: unitPrice(item, size) };
+      const drink = hasOptions(item);
+      return {
+        item,
+        qty: l.qty,
+        size: drink ? (SIZES[l.size] ? l.size : "M") : "",
+        ice: drink ? String(l.ice ?? 100) : "",
+        sugar: drink ? String(l.sugar ?? 100) : "",
+        unit: lineUnit(l),
+      };
     })
     .filter(Boolean);
 }
@@ -70,30 +59,28 @@ const total = () => subtotal() - cutAmount() + shipAmount();
 function renderSummary() {
   const lines = getLines();
 
+  // Tiêu đề bảng (vẽ lại ở đây để luôn khớp với các cột bên dưới)
+  const table = $("lines").closest("table");
+  if (table && table.tHead) {
+    table.tHead.innerHTML =
+      "<tr><th>Món</th><th>Size</th><th>Đá</th><th>Đường</th><th>SL</th><th>Thành tiền</th></tr>";
+  }
+
   $("lines").innerHTML =
     lines
-      .map((l) => {
-        const sizeCell = l.size
-          ? `<select class="size-sel" data-id="${l.item.id}" aria-label="Chọn size ${esc(l.item.name)}">` +
-            Object.entries(SIZES)
-              .map(([k, v]) => `<option value="${k}" ${k === l.size ? "selected" : ""}>${v.label}${fmtAdd(v.add)}</option>`)
-              .join("") +
-            "</select>"
-          : "-";
-        return `
+      .map(
+        (l) => `
         <tr>
-          <td>${esc(l.item.name)}</td>
-          <td>${sizeCell}</td>
-          <td><span class="qty">
-            <button type="button" data-act="dec" data-id="${l.item.id}" aria-label="Giảm số lượng">-</button>${l.qty}
-            <button type="button" data-act="inc" data-id="${l.item.id}" aria-label="Tăng số lượng">+</button>
-          </span></td>
-          <td>${fmt(l.unit * l.qty)}</td>
-          <td><button type="button" class="btn ghost" data-act="del" data-id="${l.item.id}">Xóa</button></td>
-        </tr>`;
-      })
+          <td class="dish">${esc(l.item.name)}</td>
+          <td>${l.size ? SIZES[l.size].label : "-"}</td>
+          <td>${l.ice !== "" ? l.ice + "%" : "-"}</td>
+          <td>${l.sugar !== "" ? l.sugar + "%" : "-"}</td>
+          <td>${l.qty}</td>
+          <td class="amount">${fmt(l.unit * l.qty)}</td>
+        </tr>`
+      )
       .join("") ||
-    '<tr><td colspan="5" class="empty">Hóa đơn trống. <a href="index.html">Chọn món ở trang Thực đơn</a>.</td></tr>';
+    '<tr><td colspan="6" class="empty">Chưa có món nào. <a href="index.html">Chọn món ở trang Thực đơn</a>, rồi chỉnh ở trang <a href="order.html">Gọi món</a>.</td></tr>';
 
   $("sub").textContent = fmt(subtotal());
   $("cut").textContent = "-" + fmt(cutAmount());
@@ -109,28 +96,6 @@ function updateChange() {
   $("change").textContent =
     cash > 0 && cash >= total() ? "Tiền thừa trả khách: " + fmt(cash - total()) : "";
 }
-
-// ---------- Sự kiện: chỉnh hóa đơn ----------
-$("lines").addEventListener("click", (e) => {
-  const { act, id } = e.target.dataset;
-  if (!act) return;
-
-  const cart = getCart();
-  if (act === "inc") cart[id]++;
-  if (act === "dec" && --cart[id] <= 0) delete cart[id];
-  if (act === "del") delete cart[id];
-
-  save("cart", cart);
-  renderSummary();
-});
-
-$("lines").addEventListener("change", (e) => {
-  if (!e.target.matches(".size-sel")) return;
-  const sizes = getSizes();
-  sizes[e.target.dataset.id] = e.target.value;
-  save("sizes", sizes);
-  renderSummary();
-});
 
 // ---------- Sự kiện: mã giảm giá ----------
 $("apply").addEventListener("click", () => {
@@ -201,7 +166,7 @@ $("pay-form").addEventListener("submit", (e) => {
   check("e-address", kind === "home" && address.length < 5, "Nhập địa chỉ giao hàng (ít nhất 5 ký tự).");
   check("e-method", !method, "Chọn phương thức thanh toán.");
   check("e-cash", method && method.value === "Tiền mặt" && cash < total(), "Tiền khách đưa chưa đủ.");
-  check("e-cart", getLines().length === 0, "Hóa đơn trống, hãy chọn món trước.");
+  check("e-cart", getLines().length === 0, "Chưa có món nào, hãy gọi món trước.");
   if (!ok) return;
 
   // Tạo hóa đơn và lưu vào localStorage
@@ -214,7 +179,14 @@ $("pay-form").addEventListener("submit", (e) => {
     table: kind === "table" ? Number(tableId) : undefined,
     address: kind === "home" ? address : undefined,
     method: method.value,
-    items: getLines().map((l) => ({ name: l.item.name, size: l.size, qty: l.qty, amount: l.unit * l.qty })),
+    items: getLines().map((l) => ({
+      name: l.item.name,
+      size: l.size,
+      ice: l.ice,
+      sugar: l.sugar,
+      qty: l.qty,
+      amount: l.unit * l.qty,
+    })),
     sub: subtotal(),
     cut: cutAmount(),
     ship: shipAmount(),
@@ -224,8 +196,7 @@ $("pay-form").addEventListener("submit", (e) => {
   save("orders", [...load("orders", []), bill]);
 
   // Xóa giỏ hàng sau khi thanh toán
-  save("cart", {});
-  save("sizes", {});
+  saveCart([]);
   discount = 0;
   updateBadge();
 
@@ -251,9 +222,12 @@ function showInvoice(b) {
       <span>Thanh toán:</span><span>${esc(b.method)}</span>
     </div>
     <div class="table-wrap"><table>
-      <thead><tr><th>Món</th><th>Size</th><th>SL</th><th>Thành tiền</th></tr></thead>
+      <thead><tr><th>Món</th><th>Size</th><th>Đá</th><th>Đường</th><th>SL</th><th>Thành tiền</th></tr></thead>
       <tbody>${b.items
-        .map((i) => `<tr><td>${esc(i.name)}</td><td>${i.size ? SIZES[i.size].label : "-"}</td><td>${i.qty}</td><td>${fmt(i.amount)}</td></tr>`)
+        .map(
+          (i) =>
+            `<tr><td>${esc(i.name)}</td><td>${i.size ? SIZES[i.size].label : "-"}</td><td>${i.ice ? i.ice + "%" : "-"}</td><td>${i.sugar ? i.sugar + "%" : "-"}</td><td>${i.qty}</td><td>${fmt(i.amount)}</td></tr>`
+        )
         .join("")}</tbody>
     </table></div>
     <div class="total"><span>Tạm tính</span><span>${fmt(b.sub)}</span></div>

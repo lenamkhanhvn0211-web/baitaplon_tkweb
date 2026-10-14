@@ -77,29 +77,74 @@ const save = (key, value) => {
   localStorage.setItem(key, JSON.stringify(value));
 };
 
-// ---------- Giỏ hàng ----------
-// Giỏ hàng có dạng { idMón: soLượng }, ví dụ { "1": 2, "5": 1 }
+// ---------- Tùy chọn đồ uống ----------
+const SIZES = {
+  S: { label: "Nhỏ", add: -5000 },
+  M: { label: "Vừa", add: 0 },
+  L: { label: "Lớn", add: 8000 },
+};
+const LEVELS = [0, 30, 50, 70, 100]; // % đá và % đường
 
-const getCart = () => load("cart", {});
+// Bánh không có size / đá / đường
+const hasOptions = (item) => item.cat !== "Bánh";
+
+// Hiện phụ thu của size: -5.000đ -> " (-5.000đ)"
+const fmtAdd = (n) => (n ? (n > 0 ? " (+" : " (-") + fmt(Math.abs(n)) + ")" : "");
+
+// ---------- Giỏ hàng ----------
+// Giỏ hàng là danh sách các dòng, MỖI DÒNG CÓ TÙY CHỌN RIÊNG:
+//   [{ uid, id, size: "M", ice: 100, sugar: 100, qty: 1 }]
+// Nhờ vậy 2 cốc cà phê đen có thể là 2 dòng với đá / đường khác nhau.
+
+const newUid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+
+// Đổi giỏ hàng kiểu cũ { idMón: soLượng } (+ "sizes", "opts") sang danh sách dòng
+function migrateCart() {
+  const old = load("cart", null);
+  if (old === null) return;
+
+  if (load("cartLines", null) === null) {
+    const sizes = load("sizes", {});
+    const opts = load("opts", {});
+    const lines = Object.entries(old)
+      .filter(([id, qty]) => qty > 0 && MENU.some((m) => m.id == id))
+      .map(([id, qty]) => ({
+        uid: newUid(),
+        id: Number(id),
+        size: SIZES[sizes[id]] ? sizes[id] : "M",
+        ice: Number((opts[id] || {}).ice ?? 100),
+        sugar: Number((opts[id] || {}).sugar ?? 100),
+        qty,
+      }));
+    save("cartLines", lines);
+  }
+  ["cart", "sizes", "opts"].forEach((k) => localStorage.removeItem(k));
+}
+
+const getCart = () => {
+  migrateCart();
+  return load("cartLines", []);
+};
+const saveCart = (lines) => save("cartLines", lines);
+
+// Đơn giá 1 ly của 1 dòng (đã cộng / trừ theo size)
+const lineUnit = (line) => {
+  const item = MENU.find((m) => m.id == line.id);
+  if (!item) return 0;
+  return item.price + (hasOptions(item) && SIZES[line.size] ? SIZES[line.size].add : 0);
+};
 
 // Tổng số lượng món trong giỏ
-const cartCount = () => {
-  return Object.values(getCart()).reduce((sum, qty) => sum + qty, 0);
-};
+const cartCount = () => getCart().reduce((sum, l) => sum + l.qty, 0);
 
 // Tổng tiền của giỏ hàng
-const cartTotal = () => {
-  return Object.entries(getCart()).reduce((sum, [id, qty]) => {
-    const item = MENU.find((m) => m.id == id);
-    return sum + item.price * qty;
-  }, 0);
-};
+const cartTotal = () => getCart().reduce((sum, l) => sum + lineUnit(l) * l.qty, 0);
 
-// Thêm 1 món vào giỏ
+// Thêm 1 món vào giỏ: luôn tạo DÒNG MỚI với tùy chọn mặc định
 function addToCart(id) {
-  const cart = getCart();
-  cart[id] = (cart[id] || 0) + 1;
-  save("cart", cart);
+  const lines = getCart();
+  lines.push({ uid: newUid(), id: Number(id), size: "M", ice: 100, sugar: 100, qty: 1 });
+  saveCart(lines);
   updateBadge();
 }
 
