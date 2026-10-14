@@ -5,7 +5,7 @@
    ========================================================== */
 
 // ĐỔI HAI DÒNG NÀY CHO ĐÚNG THÔNG TIN QUÁN
-const MESSENGER_URL = "https://m.me/TEN_FANPAGE_CUA_QUAN"; // m.me/ + username hoặc ID của fanpage
+const MESSENGER_URL = "https://m.me"; // m.me/ + username hoặc ID của fanpage
 const PHONE_NUMBER = "0900000000";                          // số điện thoại quán
 
 (function () {
