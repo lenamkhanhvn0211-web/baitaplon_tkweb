@@ -58,6 +58,20 @@ const MENU = [
   { id: 46, name: "Cheesecake",         cat: "Bánh",    price: 42000, img: "images/cheesecake.webp" },
 ];
 
+// ---------- Món khuyến mãi (DÙNG CHUNG cho mọi trang, đổi tại đây) ----------
+// id: mã món trong MENU | off: % giảm | note: dòng mô tả ngắn
+const PROMOS = [
+  { id: 7,  off: 20, note: "Vị mặn nhẹ, béo mịn, ly cà phê được gọi nhiều nhất." },
+  { id: 14, off: 15, note: "Trà đào thanh mát, giải nhiệt cho buổi chiều." },
+  { id: 26, off: 10, note: "Sinh tố bơ sánh mịn, xay mới mỗi ly." },
+];
+
+// % giảm của 1 món (0 nếu món không khuyến mãi)
+const promoOff = (id) => (PROMOS.find((p) => p.id == id) || {}).off || 0;
+
+// Giá sau giảm, làm tròn đến nghìn đồng
+const promoPrice = (price, off) => Math.round((price * (100 - off)) / 100 / 1000) * 1000;
+
 // ---------- Hàm tiện ích ----------
 
 // Định dạng tiền: 25000 -> "25.000đ"
@@ -132,7 +146,7 @@ const lineUnit = (line) => {
   const item = MENU.find((m) => m.id == line.id);
   if (!item) return 0;
   // Món khuyến mãi (line.off = % giảm): giảm giá gốc, làm tròn nghìn đồng, rồi mới cộng size
-  const base = line.off ? Math.round((item.price * (100 - line.off)) / 100 / 1000) * 1000 : item.price;
+  const base = line.off ? promoPrice(item.price, line.off) : item.price;
   return base + (hasOptions(item) && SIZES[line.size] ? SIZES[line.size].add : 0);
 };
 
@@ -142,8 +156,10 @@ const cartCount = () => getCart().reduce((sum, l) => sum + l.qty, 0);
 // Tổng tiền của giỏ hàng
 const cartTotal = () => getCart().reduce((sum, l) => sum + lineUnit(l) * l.qty, 0);
 
-// Thêm 1 món vào giỏ: luôn tạo DÒNG MỚI với tùy chọn mặc định
-function addToCart(id, off = 0) {
+// Thêm 1 món vào giỏ: luôn tạo DÒNG MỚI với tùy chọn mặc định.
+// Món nằm trong PROMOS thì tự áp dụng giảm giá, thêm từ trang nào cũng vậy.
+function addToCart(id) {
+  const off = promoOff(id);
   const lines = getCart();
   lines.push({ uid: newUid(), id: Number(id), size: "M", ice: 100, sugar: 100, qty: 1, ...(off ? { off } : {}) });
   saveCart(lines);

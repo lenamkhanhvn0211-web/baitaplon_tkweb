@@ -1,24 +1,13 @@
 /* ==========================================================
    TRANG MENU: băng chuyền khuyến mãi
-   (dùng MENU, fmt từ common.js)
+   (dùng MENU, PROMOS, promoPrice, fmt từ common.js)
    ========================================================== */
-
-// ---------- 3 món khuyến mãi (đổi tại đây) ----------
-// id: mã món trong MENU | off: % giảm | note: dòng mô tả ngắn
-const PROMOS = [
-  { id: 7,  off: 20, note: "Vị mặn nhẹ, béo mịn, ly cà phê được gọi nhiều nhất." },
-  { id: 14, off: 15, note: "Trà đào thanh mát, giải nhiệt cho buổi chiều." },
-  { id: 26, off: 10, note: "Sinh tố bơ sánh mịn, xay mới mỗi ly." },
-];
 
 const track = document.getElementById("promo-track");
 const dotsEl = document.getElementById("promo-dots");
 const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 // ---------- Khuyến mãi ----------
-// Giá sau giảm, làm tròn đến nghìn đồng
-const promoPrice = (price, off) => Math.round((price * (100 - off)) / 100 / 1000) * 1000;
-
 const promoItems = PROMOS.map((p) => ({ ...p, item: MENU.find((m) => m.id === p.id) })).filter((p) => p.item);
 
 track.innerHTML = promoItems
@@ -69,12 +58,12 @@ dotsEl.addEventListener("click", (e) => {
 });
 document.getElementById("promo-prev").addEventListener("click", () => goTo(current() - 1));
 document.getElementById("promo-next").addEventListener("click", () => goTo(current() + 1));
-// Bấm vào món khuyến mãi: thêm vào giỏ (giá đã giảm) rồi sang trang Gọi món
+// Bấm vào món khuyến mãi: thêm vào giỏ (addToCart tự áp dụng giảm giá) rồi sang trang Gọi món
 track.addEventListener("click", (e) => {
   const slide = e.target.closest(".promo-slide");
   if (!slide) return;
   const p = promoItems[+slide.dataset.i];
-  addToCart(p.item.id, p.off);
+  addToCart(p.item.id);
   location.href = "order.html";
 });
 track.addEventListener("keydown", (e) => {

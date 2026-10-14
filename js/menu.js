@@ -58,7 +58,11 @@ function renderMenu() {
       <div class="card-body">
         <strong>${m.name}</strong>
         <span>${m.cat}</span>
-        <span class="price">${fmt(m.price)}</span>
+        <span class="price">${
+          promoOff(m.id)
+            ? `${fmt(promoPrice(m.price, promoOff(m.id)))} <s style="color:#9aa5a0;font-weight:400">${fmt(m.price)}</s>`
+            : fmt(m.price)
+        }</span>
         <button class="add-btn" data-id="${m.id}">Thêm vào giỏ</button>
       </div>
     </article>`
