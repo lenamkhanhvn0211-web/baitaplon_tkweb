@@ -23,7 +23,7 @@ const MENU = [
   { id: 14, name: "Trà đào",            cat: "Trà",     price: 40000, img: "images/tra-dao.jpg" },
   { id: 15, name: "Trà vải",            cat: "Trà",     price: 40000, img: "images/tra-vai.jpg" },
   { id: 16, name: "Trà sen vàng",       cat: "Trà",     price: 42000, img: "images/tra-sen-vang.jpg" },
-  { id: 17, name: "Matcha đá xay",      cat: "Trà",     price: 40000, img: "images/matcha.webp" },
+  { id: 17, name: "Matcha đá xay",      cat: "Trà",     price: 40000, img: "images/matcha.jpg" },
   { id: 18, name: "Trà đào cam xả",     cat: "Trà",     price: 35000, img: "images/tra-dao-cam-xa.jpg" },
   { id: 19, name: "Trà xoài",           cat: "Trà",     price: 30000, img: "images/tra-xoai.jpg" },
   { id: 20, name: "Trà chanh",          cat: "Trà",     price: 25000, img: "images/tra-chanh.jpg" },
