@@ -1,28 +1,18 @@
-/* ==========================================================
-   QUẢN LÝ BÀN: sơ đồ quán + hộp đặt lịch (tại bàn / mang đi / giao về nhà)
-   - Bấm bàn trên sơ đồ -> mở hộp đặt lịch
-   - "Gọi món & thanh toán" lưu thông tin sang trang Thanh toán (khóa "checkoutDraft")
-   - busy: false (trống) | "booked" (đã đặt) | true (đang phục vụ)
-   ========================================================== */
-
 const TABLE_COUNT = 12;
 
-// Vị trí tâm của từng bàn trên ảnh sơ đồ (% theo chiều ngang, % theo chiều dọc)
-// Đã căn lại để nhãn nằm đúng trên hình bàn + ghế vẽ trong sơ đồ.
-// Nếu vẫn lệch vài pixel, chỉ cần tăng / giảm 0.5 ở số tương ứng.
 const POS = {
   1: [19.1, 19.3],
   2: [28.3, 19.4],
   3: [43.0, 22.9],
   4: [45.0, 52.7],
   5: [55.8, 22.7],
-  6: [73.1, 80], // dịch xuống một chút vì ô Bàn 6 được làm cao hơn (xem tables.css)
+  6: [73.1, 80],
   7: [24.9, 81.9],
   8: [34.9, 82.8],
   9: [45.4, 83.1],
   10: [57.9, 81.9],
-  11: [74.8, 34.5], // giữ nguyên: đã khớp
-  12: [87.7, 72.5], // giữ nguyên: đã khớp
+  11: [74.8, 34.5],
+  12: [87.7, 72.5],
 };
 
 const KIND_TITLE = {
@@ -47,10 +37,9 @@ function createDefaultTables() {
 }
 
 let tables = load("tables", createDefaultTables());
-let bookings = load("bookings", {}); // { [idBàn]: { name, phone, date, time, guests, note } }
-let times = load("tableTimes", {}); // { [idBàn]: thời điểm (ms) bàn đổi sang trạng thái hiện tại }
+let bookings = load("bookings", {});
+let times = load("tableTimes", {});
 
-// Chỉ quản trị / nhân viên mới được chỉnh trạng thái bàn thủ công
 const role = (currentUser() || {}).role;
 const isStaff = role === "admin" || role === "staff";
 
@@ -61,14 +50,13 @@ const STATUS_TEXT = {
   busy: "Đang phục vụ",
   booked: "Đã đặt trước",
 };
-const fmtDate = (d) => d.split("-").reverse().join("/"); // 2026-10-19 -> 19/10/2026
+const fmtDate = (d) => d.split("-").reverse().join("/");
 const saveAll = () => {
   save("tables", tables);
   save("bookings", bookings);
   save("tableTimes", times);
 };
 
-// Đổi trạng thái bàn (false | "booked" | true) và ghi lại thời điểm đổi
 function setState(t, state) {
   if (t.busy === state) return;
   t.busy = state;
@@ -76,7 +64,6 @@ function setState(t, state) {
   if (state !== "booked") delete bookings[t.id];
 }
 
-// Đồng hồ: 75 giây -> "01:15", trên 1 giờ -> "1:02:03"
 function fmtElapsed(ms) {
   const s = Math.max(0, Math.floor(ms / 1000));
   const p = (n) => String(n).padStart(2, "0");
@@ -84,7 +71,6 @@ function fmtElapsed(ms) {
   return (h ? h + ":" : "") + p(Math.floor((s % 3600) / 60)) + ":" + p(s % 60);
 }
 
-// Cập nhật mọi đồng hồ đang hiển thị (mỗi giây)
 function tick() {
   document.querySelectorAll("[data-since]").forEach((el) => {
     el.textContent = "⏱ " + fmtElapsed(Date.now() - Number(el.dataset.since));
@@ -92,7 +78,6 @@ function tick() {
 }
 setInterval(tick, 1000);
 
-// ---------- Sơ đồ ----------
 function renderTables() {
   $("tables").innerHTML = tables
     .filter((t) => POS[t.id])
@@ -174,7 +159,6 @@ function drawBook() {
         .join("")}</select></div>`;
   }
 
-  // Quản trị / nhân viên: chỉnh trạng thái bàn thủ công
   if (t && isStaff) {
     html += `<div class="field"><label>Trạng thái bàn (thủ công)</label><div class="seg">${[
       ["free", "Trống"],
@@ -236,7 +220,6 @@ function drawBook() {
   tick();
 }
 
-// Kiểm tra dữ liệu; strict = true khi bấm "Đặt bàn trước"
 function validate(strict) {
   const t = tables.find((x) => x.id == ui.id);
   if (ui.mode === "table" && !t) return "Hãy chọn bàn.";
@@ -257,7 +240,6 @@ function showErr(msg) {
   if (el) el.textContent = msg;
 }
 
-// Chuyển sang trang Thanh toán: lưu "bản nháp" để trang đó điền sẵn
 function goPay() {
   const err = validate(false);
   if (err) return showErr(err);
@@ -281,7 +263,7 @@ function goPay() {
         note: bk.note || "",
         when: `${bk.time} ${fmtDate(bk.date)}`,
       };
-    setState(t, true); // khách ngồi vào bàn: bắt đầu tính giờ
+    setState(t, true);
     saveAll();
   }
 
@@ -290,7 +272,7 @@ function goPay() {
     table: ui.mode === "table" ? Number(ui.id) : undefined,
     ...info,
   });
-  // Giỏ trống thì đi chọn món trước, thông tin vẫn được giữ cho tới khi thanh toán
+
   location.href = getCart().length ? "payment.html" : "index.html";
 }
 
@@ -304,7 +286,6 @@ dlg.addEventListener("click", (e) => {
 
   const t = tables.find((x) => x.id == ui.id);
 
-  // Chỉnh trạng thái thủ công (chỉ quản trị / nhân viên)
   const set = e.target.closest("[data-set]");
   if (set) {
     if (!isStaff || !t) return;
@@ -374,7 +355,6 @@ dlg.addEventListener("mousedown", (e) => {
   if (e.target === dlg) dlg.close();
 });
 
-// ---------- Sự kiện trang ----------
 $("tables").addEventListener("click", (e) => {
   const b = e.target.closest("[data-id]");
   if (b) openBook("table", Number(b.dataset.id));
@@ -392,10 +372,8 @@ $("reset").addEventListener("click", () => {
 
 renderTables();
 
-// Chỉ quản trị / nhân viên được đặt lại tất cả bàn
 if (!isStaff) $("reset").style.display = "none";
 
-// Trang Thanh toán (tab khác) vừa đổi trạng thái bàn: cập nhật lại
 window.addEventListener("storage", (e) => {
   if (!["tables", "bookings", "tableTimes"].includes(e.key)) return;
   tables = load("tables", tables);
